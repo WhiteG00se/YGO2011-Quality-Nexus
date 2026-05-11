@@ -13,3 +13,5 @@ YGO2011-Over_The_Nexus_USA_unpatched.nds<br>
   - 60+ New Competitive CPU Decks Duelists throughout the game
 
 - Quality_Patch
+
+## Technical details are in `dev_readme.md`.
