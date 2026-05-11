@@ -12,6 +12,6 @@ YGO2011-Over_The_Nexus_USA_unpatched.nds<br>
   - in-game booster packs have been replaced with real-world mainline TCG sets
   - 60+ New Competitive CPU Decks Duelists throughout the game
 
-- Quality_Patch
+- Quality_Patch (the patch of this repo)
 
 ## Technical details are in `dev_readme.md`.
