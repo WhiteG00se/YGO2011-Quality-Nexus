@@ -97,8 +97,6 @@ Sorted by (ascending) Sep 2010, Quality List, Cardname.
 | [Gorz the Emissary of Darkness](https://yugipedia.com/wiki/Gorz_the_Emissary_of_Darkness) | 1 | 1 |  |
 | [Goyo Guardian](https://yugipedia.com/wiki/Goyo_Guardian) | 1 | 1 |  |
 | [Infernity Launcher](https://yugipedia.com/wiki/Infernity_Launcher) | 1 | 1 |  |
-| [Left Arm of the Forbidden One](https://yugipedia.com/wiki/Left_Arm_of_the_Forbidden_One) | 1 | 1 |  |
-| [Left Leg of the Forbidden One](https://yugipedia.com/wiki/Left_Leg_of_the_Forbidden_One) | 1 | 1 |  |
 | [Limiter Removal](https://yugipedia.com/wiki/Limiter_Removal) | 1 | 1 |  |
 | [Magical Explosion](https://yugipedia.com/wiki/Magical_Explosion) | 1 | 1 |  |
 | [Marshmallon](https://yugipedia.com/wiki/Marshmallon) | 1 | 1 |  |
@@ -110,8 +108,6 @@ Sorted by (ascending) Sep 2010, Quality List, Cardname.
 | [Overload Fusion](https://yugipedia.com/wiki/Overload_Fusion) | 1 | 1 |  |
 | [Plaguespreader Zombie](https://yugipedia.com/wiki/Plaguespreader_Zombie) | 1 | 1 |  |
 | [Reinforcement of the Army](https://yugipedia.com/wiki/Reinforcement_of_the_Army) | 1 | 1 |  |
-| [Right Arm of the Forbidden One](https://yugipedia.com/wiki/Right_Arm_of_the_Forbidden_One) | 1 | 1 |  |
-| [Right Leg of the Forbidden One](https://yugipedia.com/wiki/Right_Leg_of_the_Forbidden_One) | 1 | 1 |  |
 | [Solemn Judgment](https://yugipedia.com/wiki/Solemn_Judgment) | 1 | 1 |  |
 | [Spirit Reaper](https://yugipedia.com/wiki/Spirit_Reaper) | 1 | 1 |  |
 | [Swords of Revealing Light](https://yugipedia.com/wiki/Swords_of_Revealing_Light) | 1 | 1 |  |
@@ -137,7 +133,11 @@ Sorted by (ascending) Sep 2010, Quality List, Cardname.
 | [Scapegoat](https://yugipedia.com/wiki/Scapegoat) | 1 | 2 |  |
 | [Allure of Darkness](https://yugipedia.com/wiki/Allure_of_Darkness) | 1 | 3 |  |
 | [Destiny Draw](https://yugipedia.com/wiki/Destiny_Draw) | 1 | 3 |  |
+| [Left Arm of the Forbidden One](https://yugipedia.com/wiki/Left_Arm_of_the_Forbidden_One) | 1 | 3 |  |
+| [Left Leg of the Forbidden One](https://yugipedia.com/wiki/Left_Leg_of_the_Forbidden_One) | 1 | 3 |  |
 | [Monster Gate](https://yugipedia.com/wiki/Monster_Gate) | 1 | 3 |  |
+| [Right Arm of the Forbidden One](https://yugipedia.com/wiki/Right_Arm_of_the_Forbidden_One) | 1 | 3 |  |
+| [Right Leg of the Forbidden One](https://yugipedia.com/wiki/Right_Leg_of_the_Forbidden_One) | 1 | 3 |  |
 | [Summoner Monk](https://yugipedia.com/wiki/Summoner_Monk) | 1 | 3 |  |
 | [The Transmigration Prophecy](https://yugipedia.com/wiki/The_Transmigration_Prophecy) | 1 | 3 |  |
 | [Tragoedia](https://yugipedia.com/wiki/Tragoedia) | 1 | 3 |  |
