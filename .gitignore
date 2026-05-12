@@ -4,3 +4,5 @@ build/
 tools/bin/*.exe
 tools/dist/
 tools/src/
+__pycache__/
+*.pyc

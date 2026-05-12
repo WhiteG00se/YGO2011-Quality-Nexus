@@ -21,6 +21,20 @@ powershell -ExecutionPolicy Bypass -File .\scripts\apply-revival-patch.ps1
 
 The script writes `build\YGO2011-Nexus-Revival-0.5.nds`.
 
+Build this repo's Quality patch without a GUI:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\create-xdelta-as-diff.ps1
+```
+
+The script writes `build\YGO2011-Quality-Nexus.nds`, creates `Quality_Patch.xdelta`, and verifies that the patch recreates the same ROM.
+
+Validate this repo's Quality patch without keeping a second ROM:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\validate-xdelta.ps1
+```
+
 ## Sources
 
 - xdelta3: https://github.com/jmacd/xdelta-gpl/releases/download/v3.0.11/xdelta3-3.0.11-x86_64.exe.zip
@@ -35,6 +49,8 @@ The script writes `build\YGO2011-Nexus-Revival-0.5.nds`.
 | `YGO2011-Over_The_Nexus_USA_unpatched.nds` | `394A146733D118E0A685D5615213125D5A94FE72F05A3F9F988FA1418EFB5709` |
 | `YGO.Nexus.Revival.0.5.xdelta` | `AB86C453B97BED34BFED2377570CEC16B674E63D01B1D67FAF19E6CBE075E182` |
 | `build\YGO2011-Nexus-Revival-0.5.nds` | `80BBAB46CADB3194C907BF2290702956DA37936AB6BE5E6A001B35304C066F55` |
+| `Quality_Patch.xdelta` | `D5687D8872584185696E914AB17C617DF00A04E3EBBC6F3C55925A6638023501` |
+| `build\YGO2011-Quality-Nexus.nds` | `B2EBBFD07E21879D247833DC321E953F32DB51299C9A213C6D778DFF16BA33D9` |
 | `tools\bin\xdelta3.exe` | `D81F59B2FE5E8589C0EE9782E231C805084F4D23DFADE413903A4CAD63B4E342` |
 | `tools\dist\xdelta3-3.0.11-x86_64.exe.zip` | `ECA90DAAB9CD8388FFA17FB4D6808BB0616CC5D37A7682126485DBA1C79F86BF` |
 | `tools\bin\DSDecmp.exe` | `F130DEB521EF18F2BD82DC53AD20A8B491F1E8705DB5F634471EE107174A62E0` |
