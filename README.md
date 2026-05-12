@@ -69,9 +69,9 @@ Sorted by (ascending) Sep 2010, Quality List, Cardname.
 | [Sinister Serpent](https://yugipedia.com/wiki/Sinister_Serpent) | 0 | 1 |  |
 | [Substitoad](https://yugipedia.com/wiki/Substitoad) | 0 | 1 |  |
 | [Magician of Faith](https://yugipedia.com/wiki/Magician_of_Faith) | 0 | 2 |  |
-| [Makyura the Destructor](https://yugipedia.com/wiki/Makyura_the_Destructor) | 0 | 2 |  |
 | [Tribe-Infecting Virus](https://yugipedia.com/wiki/Tribe-Infecting_Virus) | 0 | 2 |  |
 | [Tsukuyomi](https://yugipedia.com/wiki/Tsukuyomi) | 0 | 2 |  |
+| [Makyura the Destructor](https://yugipedia.com/wiki/Makyura_the_Destructor) | 0 | 3 | ATK/DEF 1900. |
 | [Temple of the Kings](https://yugipedia.com/wiki/Temple_of_the_Kings) | 0 | 3 |  |
 | [Time Seal](https://yugipedia.com/wiki/Time_Seal) | 0 | 3 |  |
 | [Cold Wave](https://yugipedia.com/wiki/Cold_Wave) | 1 | 0 |  |

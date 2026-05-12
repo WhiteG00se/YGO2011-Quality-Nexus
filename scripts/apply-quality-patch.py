@@ -16,6 +16,7 @@ NEW_LIST_NAME = b"Quality List - 2010"
 LIMIT_FILE = "limit201009.bin"
 DECK_PAC_ROM_FILE_ID = 61
 
+MAKYURA_THE_DESTRUCTOR = 0x14A5
 RING_OF_DESTRUCTION = 0x138D
 
 HEAVY_STORM = 0x131B
@@ -29,6 +30,10 @@ RING_OF_DESTRUCTION_OLD_DESCRIPTION = (
 RING_OF_DESTRUCTION_NEW_DESCRIPTION = (
     b"Select and destroy 1 face-up monster. Opponent gains LP equal to its ATK; you take damage."
 )
+
+CARD_STAT_CHANGES = [
+    ("Makyura the Destructor", MAKYURA_THE_DESTRUCTOR, 0x28, 0x3C, 0x2F, 0x5F),
+]
 
 ARM9_OVERLAY_PATCHES = {
     3: [
@@ -83,7 +88,6 @@ LIMIT_CHANGES = [
     ("Gladiator Beast War Chariot", 0x1E53, LIMITED),
     ("Skill Drain", 0x166C, LIMITED),
     ("Shien's Smoke Signal", 0x247B, LIMITED),
-    ("Makyura the Destructor", 0x14A5, SEMI_LIMITED),
     ("Magician of Faith", 0x1152, SEMI_LIMITED),
     ("Tribe-Infecting Virus", 0x161C, SEMI_LIMITED),
     ("Card Trooper", 0x1B1B, SEMI_LIMITED),
@@ -119,6 +123,7 @@ LIMIT_CHANGES = [
     ("Magical Stone Excavation", 0x1638, UNLIMITED),
     ("Dewloren, Tiger King of the Ice Barrier", 0x1F22, UNLIMITED),
     ("Gold Sarcophagus", 0x1811, UNLIMITED),
+    ("Makyura the Destructor", MAKYURA_THE_DESTRUCTOR, UNLIMITED),
     ("Tragoedia", 0x1F99, UNLIMITED),
     ("Allure of Darkness", 0x1D92, UNLIMITED),
     ("Destiny Draw", 0x1B26, UNLIMITED),
@@ -361,6 +366,33 @@ def patch_card_desc_e(desc_data: bytearray) -> None:
     )
 
 
+def patch_card_prop(card_prop_data: bytearray) -> None:
+    if len(card_prop_data) % 8 != 0:
+        raise ValueError(f"Unexpected card_prop.bin size: {len(card_prop_data)} bytes.")
+
+    for name, code, expected_attack_byte, expected_defense_byte, attack_byte, defense_byte in CARD_STAT_CHANGES:
+        matches = []
+        for offset in range(0, len(card_prop_data), 8):
+            card_code = int.from_bytes(card_prop_data[offset : offset + 2], "little") & 0x3FFF
+            if card_code == code:
+                matches.append(offset)
+
+        if len(matches) != 1:
+            raise ValueError(f"Expected one {name} card_prop.bin row, found {len(matches)}.")
+
+        offset = matches[0]
+        actual_attack_byte = card_prop_data[offset + 2]
+        actual_defense_byte = card_prop_data[offset + 3]
+        if (actual_attack_byte, actual_defense_byte) != (expected_attack_byte, expected_defense_byte):
+            raise ValueError(
+                f"{name} expected stat bytes {expected_attack_byte:02X} {expected_defense_byte:02X} "
+                f"but found {actual_attack_byte:02X} {actual_defense_byte:02X}."
+            )
+
+        card_prop_data[offset + 2] = attack_byte
+        card_prop_data[offset + 3] = defense_byte
+
+
 def patch_arm9_overlay_bytes(rom: ndspy.rom.NintendoDSRom) -> None:
     overlays = rom.loadArm9Overlays()
 
@@ -445,6 +477,7 @@ def main() -> None:
     patch_arm9_overlay_bytes(rom)
     patch_nested_file(rom, 50, LIMIT_FILE, patch_limit_201009)
     patch_nested_file(rom, 51, "card_desc_e.bin", patch_card_desc_e)
+    patch_nested_file(rom, 51, "card_prop.bin", patch_card_prop)
     patched_decks = patch_nested_files(rom, DECK_PAC_ROM_FILE_ID, patch_cpu_deck_heavy_storm)
     patch_nested_file(rom, 51, "game_text_e.bin", patch_list_name)
     patch_nested_file(rom, 95, "system_txt_e.bin", patch_list_name)
