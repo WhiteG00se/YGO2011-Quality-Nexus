@@ -1,8 +1,6 @@
-YGO2011-Over_The_Nexus_USA_unpatched.nds
-build/
+/YGO2011-Over_The_Nexus_USA_unpatched.nds
+/build/
+/tools
 .venv/
-tools/bin/*.exe
-tools/dist/
-tools/src/
 __pycache__/
 *.pyc
