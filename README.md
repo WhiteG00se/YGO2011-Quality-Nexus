@@ -1,5 +1,7 @@
 ## YGO2011-Quality-Nexus
 
+Only US version and English have been tested.
+
 YGO2011-Over_The_Nexus_USA_unpatched.nds<br>
 \+ YGO.Nexus.Revival.0.5.xdelta<br>
 \+ Quality_Patch.xdelta<br>
