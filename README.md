@@ -58,7 +58,7 @@ Sorted by (ascending) Sep 2010, Quality List, Cardname.
 | [Victory Dragon](https://yugipedia.com/wiki/Victory_Dragon) | 0 | 0 |  |
 | [Witch of the Black Forest](https://yugipedia.com/wiki/Witch_of_the_Black_Forest) | 0 | 0 |  |
 | [Yata-Garasu](https://yugipedia.com/wiki/Yata-Garasu) | 0 | 0 |  |
-| [Cyber-Stein](https://yugipedia.com/wiki/Cyber-Stein) | 0 | 1 |  |
+| [Cyber-Stein](https://yugipedia.com/wiki/Cyber-Stein) | 0 | 1 | Pays half your LP; summons in face-up Defense Position. |
 | [Dark Magician of Chaos](https://yugipedia.com/wiki/Dark_Magician_of_Chaos) | 0 | 1 |  |
 | [Dark Strike Fighter](https://yugipedia.com/wiki/Dark_Strike_Fighter) | 0 | 1 |  |
 | [Heavy Storm](https://yugipedia.com/wiki/Heavy_Storm) | 0 | 1 |  |
@@ -105,6 +105,7 @@ Sorted by (ascending) Sep 2010, Quality List, Cardname.
 | [Mind Master](https://yugipedia.com/wiki/Mind_Master) | 1 | 1 |  |
 | [Mirror Force](https://yugipedia.com/wiki/Mirror_Force) | 1 | 1 |  |
 | [Morphing Jar](https://yugipedia.com/wiki/Morphing_Jar) | 1 | 1 |  |
+| [Neo-Spacian Grand Mole](https://yugipedia.com/wiki/Neo-Spacian_Grand_Mole) | 1 | 1 |  |
 | [Overload Fusion](https://yugipedia.com/wiki/Overload_Fusion) | 1 | 1 |  |
 | [Plaguespreader Zombie](https://yugipedia.com/wiki/Plaguespreader_Zombie) | 1 | 1 |  |
 | [Reinforcement of the Army](https://yugipedia.com/wiki/Reinforcement_of_the_Army) | 1 | 1 |  |
@@ -124,7 +125,6 @@ Sorted by (ascending) Sep 2010, Quality List, Cardname.
 | [Mezuki](https://yugipedia.com/wiki/Mezuki) | 1 | 2 |  |
 | [Necro Gardna](https://yugipedia.com/wiki/Necro_Gardna) | 1 | 2 |  |
 | [Necroface](https://yugipedia.com/wiki/Necroface) | 1 | 2 |  |
-| [Neo-Spacian Grand Mole](https://yugipedia.com/wiki/Neo-Spacian_Grand_Mole) | 1 | 2 |  |
 | [Night Assailant](https://yugipedia.com/wiki/Night_Assailant) | 1 | 2 |  |
 | [One for One](https://yugipedia.com/wiki/One_for_One) | 1 | 2 |  |
 | [Reasoning](https://yugipedia.com/wiki/Reasoning) | 1 | 2 |  |

@@ -17,6 +17,7 @@ LIMIT_FILE = "limit201009.bin"
 DECK_PAC_ROM_FILE_ID = 61
 
 MAKYURA_THE_DESTRUCTOR = 0x14A5
+CYBER_STEIN = 0x114A
 RING_OF_DESTRUCTION = 0x138D
 
 HEAVY_STORM = 0x131B
@@ -24,11 +25,45 @@ MYSTICAL_SPACE_TYPHOON = 0x132D
 MAX_MAIN_DECK_SIZE = 60
 YDC_HEADER_SIZE = 8
 
+CYBER_STEIN_HALF_LP_COST_HOOK = 0x021E4A20
+CYBER_STEIN_HALF_LP_COST_CAVE = 0x02294180
+CYBER_STEIN_SUMMON_POSITION_PATCH = 0x0220B0B6
+
+CYBER_STEIN_OLD_DESCRIPTION = (
+    b"Pay 5000 Life Points. Special Summon 1 Fusion Monster from your Extra Deck to the field in Attack Position."
+)
+CYBER_STEIN_NEW_DESCRIPTION = (
+    b"Pay half your Life Points. Special Summon 1 Fusion Monster from the Extra Deck in face-up Defense Position."
+)
+
 RING_OF_DESTRUCTION_OLD_DESCRIPTION = (
     b"Select and destroy 1 face-up monster, and inflict damage to both players equal to its ATK."
 )
 RING_OF_DESTRUCTION_NEW_DESCRIPTION = (
     b"Select and destroy 1 face-up monster. Opponent gains LP equal to its ATK; you take damage."
+)
+
+
+def thumb_bl(source_address: int, target_address: int) -> bytes:
+    offset = target_address - (source_address + 4)
+    if offset % 2:
+        raise ValueError(f"Thumb BL target {target_address:#010x} is not halfword-aligned.")
+    if offset < -(1 << 22) or offset >= (1 << 22):
+        raise ValueError(f"Thumb BL target {target_address:#010x} is out of range from {source_address:#010x}.")
+
+    immediate = (offset >> 1) & 0x3FFFFF
+    high_halfword = 0xF000 | ((immediate >> 11) & 0x7FF)
+    low_halfword = 0xF800 | (immediate & 0x7FF)
+    return high_halfword.to_bytes(2, "little") + low_halfword.to_bytes(2, "little")
+
+
+CYBER_STEIN_HALF_LP_COST_CAVE_BYTES = bytes.fromhex(
+    """
+    28 88 08 49 88 42 0a d1 01 20 31 1c 01 40 06 48
+    0a 1c 42 43 05 48 80 58 44 10 20 1c 70 bd 04 49
+    70 47 00 00 4a 11 00 00 3c 0b 00 00 94 ad 29 02
+    a0 f2 26 02
+    """
 )
 
 CARD_STAT_CHANGES = [
@@ -41,6 +76,21 @@ ARM9_OVERLAY_PATCHES = {
             0x02210662,
             bytes.fromhex("bf f7 2d fb"),  # bl 0x021CFCC0: damage opponent
             bytes.fromhex("c0 f7 8d f9"),  # bl 0x021D0980: heal opponent
+        ),
+        (
+            CYBER_STEIN_HALF_LP_COST_HOOK,
+            bytes.fromhex("28 88 89 49"),  # ldrh r0, [r5]; ldr r1, =0x0226F2A0
+            thumb_bl(CYBER_STEIN_HALF_LP_COST_HOOK, CYBER_STEIN_HALF_LP_COST_CAVE),
+        ),
+        (
+            CYBER_STEIN_SUMMON_POSITION_PATCH,
+            bytes.fromhex("00 26"),  # movs r6, #0: Attack Position
+            bytes.fromhex("01 26"),  # movs r6, #1: face-up Defense Position
+        ),
+        (
+            CYBER_STEIN_HALF_LP_COST_CAVE,
+            bytes(len(CYBER_STEIN_HALF_LP_COST_CAVE_BYTES)),
+            CYBER_STEIN_HALF_LP_COST_CAVE_BYTES,
         ),
     ],
 }
@@ -68,7 +118,7 @@ LIMIT_CHANGES = [
     ("Gateway of the Six", 0x219A, FORBIDDEN),
     ("Trap Dustshoot", 0x1546, FORBIDDEN),
     ("Royal Tribute", 0x15A4, LIMITED),
-    ("Cyber-Stein", 0x114A, LIMITED),
+    ("Cyber-Stein", CYBER_STEIN, LIMITED),
     ("Deck Devastation Virus", 0x188C, LIMITED),
     ("Metamorphosis", 0x15A3, LIMITED),
     ("Dark Magician of Chaos", 0x16F8, LIMITED),
@@ -82,6 +132,7 @@ LIMIT_CHANGES = [
     ("Honest", 0x1D96, LIMITED),
     ("Morphing Jar #2", 0x1369, LIMITED),
     ("Spirit Reaper", 0x1596, LIMITED),
+    ("Neo-Spacian Grand Mole", 0x1A72, LIMITED),
     ("Blackwing - Kalut the Moon Shadow", 0x1FE4, LIMITED),
     ("Mystical Space Typhoon", 0x132D, LIMITED),
     ("Magic Cylinder", 0x1404, LIMITED),
@@ -107,7 +158,6 @@ LIMIT_CHANGES = [
     ("Book of Moon", 0x1538, SEMI_LIMITED),
     ("Advanced Ritual Art", 0x1B54, SEMI_LIMITED),
     ("Foolish Burial", 0x1474, SEMI_LIMITED),
-    ("Neo-Spacian Grand Mole", 0x1A72, SEMI_LIMITED),
     ("Debris Dragon", 0x1F45, SEMI_LIMITED),
     ("Tsukuyomi", 0x1694, SEMI_LIMITED),
     ("Night Assailant", 0x179A, SEMI_LIMITED),
@@ -356,17 +406,30 @@ def patch_list_name(text_data: bytearray) -> None:
     text_data[position : position + len(OLD_LIST_NAME)] = replacement
 
 
-def patch_card_desc_e(desc_data: bytearray) -> None:
-    position = desc_data.find(RING_OF_DESTRUCTION_OLD_DESCRIPTION)
+def replace_unique(data: bytearray, old_value: bytes, new_value: bytes, label: str) -> None:
+    position = data.find(old_value)
     if position < 0:
-        raise ValueError("Could not find Ring of Destruction's old English description.")
-    if desc_data.find(RING_OF_DESTRUCTION_OLD_DESCRIPTION, position + 1) >= 0:
-        raise ValueError("Found more than one Ring of Destruction English description.")
-    if len(RING_OF_DESTRUCTION_NEW_DESCRIPTION) != len(RING_OF_DESTRUCTION_OLD_DESCRIPTION):
-        raise ValueError("Ring of Destruction replacement description must stay the same length.")
+        raise ValueError(f"Could not find {label}.")
+    if data.find(old_value, position + 1) >= 0:
+        raise ValueError(f"Found more than one {label}.")
+    if len(new_value) != len(old_value):
+        raise ValueError(f"{label} replacement must stay the same length.")
 
-    desc_data[position : position + len(RING_OF_DESTRUCTION_OLD_DESCRIPTION)] = (
-        RING_OF_DESTRUCTION_NEW_DESCRIPTION
+    data[position : position + len(old_value)] = new_value
+
+
+def patch_card_desc_e(desc_data: bytearray) -> None:
+    replace_unique(
+        desc_data,
+        RING_OF_DESTRUCTION_OLD_DESCRIPTION,
+        RING_OF_DESTRUCTION_NEW_DESCRIPTION,
+        "Ring of Destruction English description",
+    )
+    replace_unique(
+        desc_data,
+        CYBER_STEIN_OLD_DESCRIPTION,
+        CYBER_STEIN_NEW_DESCRIPTION,
+        "Cyber-Stein English description",
     )
 
 
