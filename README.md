@@ -50,7 +50,6 @@ Sorted by (ascending) Sep 2010, Quality List, Cardname.
 | [Pot of Greed](https://yugipedia.com/wiki/Pot_of_Greed) | 0 | 0 |  |
 | [Premature Burial](https://yugipedia.com/wiki/Premature_Burial) | 0 | 0 |  |
 | [Raigeki](https://yugipedia.com/wiki/Raigeki) | 0 | 0 |  |
-| [Ring of Destruction](https://yugipedia.com/wiki/Ring_of_Destruction) | 0 | 0 |  |
 | [Sixth Sense](https://yugipedia.com/wiki/Sixth_Sense) | 0 | 0 |  |
 | [Snatch Steal](https://yugipedia.com/wiki/Snatch_Steal) | 0 | 0 |  |
 | [The Forceful Sentry](https://yugipedia.com/wiki/The_Forceful_Sentry) | 0 | 0 |  |
@@ -66,6 +65,7 @@ Sorted by (ascending) Sep 2010, Quality List, Cardname.
 | [Last Will](https://yugipedia.com/wiki/Last_Will) | 0 | 1 |  |
 | [Metamorphosis](https://yugipedia.com/wiki/Metamorphosis) | 0 | 1 |  |
 | [Rescue Cat](https://yugipedia.com/wiki/Rescue_Cat) | 0 | 1 |  |
+| [Ring of Destruction](https://yugipedia.com/wiki/Ring_of_Destruction) | 0 | 1 | Opponent gains LP equal to the monster's ATK; you take damage. |
 | [Sinister Serpent](https://yugipedia.com/wiki/Sinister_Serpent) | 0 | 1 |  |
 | [Substitoad](https://yugipedia.com/wiki/Substitoad) | 0 | 1 |  |
 | [Temple of the Kings](https://yugipedia.com/wiki/Temple_of_the_Kings) | 0 | 1 |  |

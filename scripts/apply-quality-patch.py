@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import ndspy.code
 import ndspy.rom
 
 
@@ -15,10 +16,29 @@ NEW_LIST_NAME = b"Quality List - 2010"
 LIMIT_FILE = "limit201009.bin"
 DECK_PAC_ROM_FILE_ID = 61
 
+RING_OF_DESTRUCTION = 0x138D
+
 HEAVY_STORM = 0x131B
 MYSTICAL_SPACE_TYPHOON = 0x132D
 MAX_MAIN_DECK_SIZE = 60
 YDC_HEADER_SIZE = 8
+
+RING_OF_DESTRUCTION_OLD_DESCRIPTION = (
+    b"Select and destroy 1 face-up monster, and inflict damage to both players equal to its ATK."
+)
+RING_OF_DESTRUCTION_NEW_DESCRIPTION = (
+    b"Select and destroy 1 face-up monster. Opponent gains LP equal to its ATK; you take damage."
+)
+
+ARM9_OVERLAY_PATCHES = {
+    3: [
+        (
+            0x02210662,
+            bytes.fromhex("bf f7 2d fb"),  # bl 0x021CFCC0: damage opponent
+            bytes.fromhex("c0 f7 8d f9"),  # bl 0x021D0980: heal opponent
+        ),
+    ],
+}
 
 FORBIDDEN = 0x0000
 LIMITED = 0x4000
@@ -49,6 +69,7 @@ LIMIT_CHANGES = [
     ("Rescue Cat", 0x1876, LIMITED),
     ("Dark Strike Fighter", 0x1F63, LIMITED),
     ("Last Will", 0x1315, LIMITED),
+    ("Ring of Destruction", RING_OF_DESTRUCTION, LIMITED),
     ("Temple of the Kings", 0x146F, LIMITED),
     ("Time Seal", 0x1378, LIMITED),
     ("Blackwing - Kalut the Moon Shadow", 0x1FE4, LIMITED),
@@ -312,6 +333,42 @@ def patch_list_name(text_data: bytearray) -> None:
     text_data[position : position + len(OLD_LIST_NAME)] = replacement
 
 
+def patch_card_desc_e(desc_data: bytearray) -> None:
+    position = desc_data.find(RING_OF_DESTRUCTION_OLD_DESCRIPTION)
+    if position < 0:
+        raise ValueError("Could not find Ring of Destruction's old English description.")
+    if desc_data.find(RING_OF_DESTRUCTION_OLD_DESCRIPTION, position + 1) >= 0:
+        raise ValueError("Found more than one Ring of Destruction English description.")
+    if len(RING_OF_DESTRUCTION_NEW_DESCRIPTION) != len(RING_OF_DESTRUCTION_OLD_DESCRIPTION):
+        raise ValueError("Ring of Destruction replacement description must stay the same length.")
+
+    desc_data[position : position + len(RING_OF_DESTRUCTION_OLD_DESCRIPTION)] = (
+        RING_OF_DESTRUCTION_NEW_DESCRIPTION
+    )
+
+
+def patch_arm9_overlay_bytes(rom: ndspy.rom.NintendoDSRom) -> None:
+    overlays = rom.loadArm9Overlays()
+
+    for overlay_id, patches in ARM9_OVERLAY_PATCHES.items():
+        overlay = overlays[overlay_id]
+        for ram_address, expected, replacement in patches:
+            offset = ram_address - overlay.ramAddress
+            if offset < 0 or offset + len(expected) > len(overlay.data):
+                raise ValueError(f"Overlay {overlay_id} address {ram_address:#010x} is out of range.")
+            actual = bytes(overlay.data[offset : offset + len(expected)])
+            if actual != expected:
+                raise ValueError(
+                    f"Overlay {overlay_id} address {ram_address:#010x} expected "
+                    f"{expected.hex(' ')} but found {actual.hex(' ')}."
+                )
+            overlay.data[offset : offset + len(expected)] = replacement
+
+        rom.files[overlay.fileID] = overlay.save(compress=overlay.compressed)
+
+    rom.arm9OverlayTable = ndspy.code.saveOverlayTable(overlays)
+
+
 def patch_cpu_deck_heavy_storm(deck_data: bytearray, deck_name: str) -> None:
     main_count_offset = YDC_HEADER_SIZE
     main_count = read_u16(deck_data, main_count_offset, deck_name, "main deck count")
@@ -371,7 +428,9 @@ def main() -> None:
         raise FileNotFoundError(f"Missing source ROM: {SOURCE_ROM}")
 
     rom = ndspy.rom.NintendoDSRom.fromFile(str(SOURCE_ROM))
+    patch_arm9_overlay_bytes(rom)
     patch_nested_file(rom, 50, LIMIT_FILE, patch_limit_201009)
+    patch_nested_file(rom, 51, "card_desc_e.bin", patch_card_desc_e)
     patched_decks = patch_nested_files(rom, DECK_PAC_ROM_FILE_ID, patch_cpu_deck_heavy_storm)
     patch_nested_file(rom, 51, "game_text_e.bin", patch_list_name)
     patch_nested_file(rom, 95, "system_txt_e.bin", patch_list_name)
