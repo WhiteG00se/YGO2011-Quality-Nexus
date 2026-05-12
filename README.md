@@ -14,6 +14,8 @@ YGO2011-Over_The_Nexus_USA_unpatched.nds<br>
 
 - Quality_Patch (the patch of this repo)
   - `List - September, 2010` => `Quality List - 2010`
+  - Bots play with `List - September, 2010`, but with the following changes:
+    - if there are 2 or more Mystical Space Typhoons, change one of them to Heavy Storm, else add Heavy Storm to the deck
 
 <details>
 <summary>Quality List - 2010 card limits</summary>

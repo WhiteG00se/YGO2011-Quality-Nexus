@@ -13,6 +13,12 @@ OLD_LIST_NAME = b"List - September, 2010"
 NEW_LIST_NAME = b"Quality List - 2010"
 
 LIMIT_FILE = "limit201009.bin"
+DECK_PAC_ROM_FILE_ID = 61
+
+HEAVY_STORM = 0x131B
+MYSTICAL_SPACE_TYPHOON = 0x132D
+MAX_MAIN_DECK_SIZE = 60
+YDC_HEADER_SIZE = 8
 
 FORBIDDEN = 0x0000
 LIMITED = 0x4000
@@ -200,6 +206,47 @@ def patch_nested_file(
     rom.files[rom_file_id] = bytes(pac_data)
 
 
+def patch_nested_files(
+    rom: ndspy.rom.NintendoDSRom,
+    rom_file_id: int,
+    patcher,
+) -> int:
+    pac_data = bytearray(rom.files[rom_file_id])
+    entries = parse_pac_layout(pac_data)
+    patched = 0
+
+    for nested_name, entry in entries.items():
+        offset = entry["offset"]
+        size = entry["size"]
+        nested = bytearray(pac_data[offset : offset + size])
+        original = bytes(nested)
+        patcher(nested, nested_name)
+        if bytes(nested) == original:
+            continue
+
+        next_offsets = [
+            other["offset"]
+            for name, other in entries.items()
+            if name != nested_name and other["offset"] > offset
+        ]
+        next_offset = min(next_offsets, default=len(pac_data))
+        capacity = next_offset - offset
+        if len(nested) > capacity:
+            raise ValueError(
+                f"{nested_name} grew from {size} to {len(nested)} bytes, "
+                f"but only {capacity} bytes are available before the next PAC file."
+            )
+
+        pac_data[offset : offset + len(nested)] = nested
+        if len(nested) < size:
+            pac_data[offset + len(nested) : offset + size] = b"\x00" * (size - len(nested))
+        pac_data[entry["table_offset"] + 4 : entry["table_offset"] + 8] = len(nested).to_bytes(4, "little")
+        patched += 1
+
+    rom.files[rom_file_id] = bytes(pac_data)
+    return patched
+
+
 def patch_limit_201009(limit_data: bytearray) -> None:
     values = [int.from_bytes(limit_data[i : i + 2], "little") for i in range(0, len(limit_data), 2)]
     header = values[:4]
@@ -265,6 +312,58 @@ def patch_list_name(text_data: bytearray) -> None:
     text_data[position : position + len(OLD_LIST_NAME)] = replacement
 
 
+def patch_cpu_deck_heavy_storm(deck_data: bytearray, deck_name: str) -> None:
+    main_count_offset = YDC_HEADER_SIZE
+    main_count = read_u16(deck_data, main_count_offset, deck_name, "main deck count")
+    main_start = main_count_offset + 2
+    main_end = main_start + (main_count * 2)
+    validate_ydc_sections(deck_data, deck_name)
+
+    main_cards = [
+        read_u16(deck_data, main_start + (i * 2), deck_name, f"main deck card {i}")
+        for i in range(main_count)
+    ]
+    if HEAVY_STORM in main_cards:
+        return
+
+    mystical_space_typhoons = [
+        index
+        for index, card in enumerate(main_cards)
+        if card == MYSTICAL_SPACE_TYPHOON
+    ]
+    if len(mystical_space_typhoons) >= 2:
+        replacement_offset = main_start + (mystical_space_typhoons[-1] * 2)
+        deck_data[replacement_offset : replacement_offset + 2] = HEAVY_STORM.to_bytes(2, "little")
+        return
+
+    if main_count >= MAX_MAIN_DECK_SIZE:
+        raise ValueError(f"{deck_name} cannot add Heavy Storm because its main deck already has {main_count} cards.")
+
+    deck_data[main_count_offset : main_count_offset + 2] = (main_count + 1).to_bytes(2, "little")
+    deck_data[main_end:main_end] = HEAVY_STORM.to_bytes(2, "little")
+
+
+def validate_ydc_sections(deck_data: bytearray, deck_name: str) -> None:
+    position = YDC_HEADER_SIZE
+    main_count = read_u16(deck_data, position, deck_name, "main deck count")
+    position += 2 + (main_count * 2)
+
+    extra_count = read_u16(deck_data, position, deck_name, "extra deck count")
+    position += 2 + (extra_count * 2)
+
+    side_count = read_u16(deck_data, position, deck_name, "side deck count")
+    position += 2 + (side_count * 2)
+
+    if position != len(deck_data):
+        raise ValueError(f"{deck_name} has {len(deck_data) - position} trailing bytes after its YDC deck sections.")
+
+
+def read_u16(data: bytearray, offset: int, file_name: str, field_name: str) -> int:
+    if offset + 2 > len(data):
+        raise ValueError(f"{file_name} ended before {field_name}.")
+    return int.from_bytes(data[offset : offset + 2], "little")
+
+
 def main() -> None:
     if len(NEW_LIST_NAME) > len(OLD_LIST_NAME):
         raise ValueError("New list name must not be longer than the original in-place string.")
@@ -273,12 +372,14 @@ def main() -> None:
 
     rom = ndspy.rom.NintendoDSRom.fromFile(str(SOURCE_ROM))
     patch_nested_file(rom, 50, LIMIT_FILE, patch_limit_201009)
+    patched_decks = patch_nested_files(rom, DECK_PAC_ROM_FILE_ID, patch_cpu_deck_heavy_storm)
     patch_nested_file(rom, 51, "game_text_e.bin", patch_list_name)
     patch_nested_file(rom, 95, "system_txt_e.bin", patch_list_name)
 
     OUTPUT_ROM.parent.mkdir(parents=True, exist_ok=True)
     rom.saveToFile(str(OUTPUT_ROM))
     restore_trailing_padding(SOURCE_ROM, OUTPUT_ROM)
+    print(f"Patched {patched_decks} CPU decks.")
     print(f"Wrote {OUTPUT_ROM.relative_to(REPO_ROOT)}")
 
 
