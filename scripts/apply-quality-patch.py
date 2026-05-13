@@ -18,6 +18,10 @@ DECK_PAC_ROM_FILE_ID = 61
 
 MAKYURA_THE_DESTRUCTOR = 0x14A5
 CYBER_STEIN = 0x114A
+MAGICAL_SCIENTIST = 0x1619
+BRIONAC_DRAGON_OF_THE_ICE_BARRIER = 0x1D7C
+MIND_MASTER = 0x1E22
+PREMATURE_BURIAL = 0x1366
 RING_OF_DESTRUCTION = 0x138D
 
 HEAVY_STORM = 0x131B
@@ -26,14 +30,66 @@ MAX_MAIN_DECK_SIZE = 60
 YDC_HEADER_SIZE = 8
 
 CYBER_STEIN_HALF_LP_COST_HOOK = 0x021E4A20
-CYBER_STEIN_HALF_LP_COST_CAVE = 0x02294180
+CYBER_STEIN_HALF_LP_COST_CAVE = 0x0226CBBC
 CYBER_STEIN_SUMMON_POSITION_PATCH = 0x0220B0B6
+CYBER_STEIN_OPT_MARK_SUMMON_HOOK = 0x0220B0A0
+CYBER_STEIN_OPT_MARK_SUMMON_CAVE = 0x0226C8A6
+MAGICAL_SCIENTIST_OPT_MARK_SUMMON_HOOK = 0x02213226
+MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE = 0x0226C8C2
+CYBER_SCIENTIST_OPT_CHECK_CAVE = 0x0226CB96
+MIND_BRIONAC_OPT_CHECK_CAVE = 0x0226C924
+MIND_BRIONAC_OPT_MARK_RESOLVE_CAVE = 0x02294180
+
+CYBER_STEIN_EFFECT_CHECK_POINTER = 0x0227A2F8
+CYBER_STEIN_EFFECT_RESOLVE_POINTER = 0x0227A2FC
+MAGICAL_SCIENTIST_EFFECT_CHECK_POINTER = 0x0227AB38
+BRIONAC_EFFECT_CHECK_POINTER = 0x0227C248
+BRIONAC_EFFECT_RESOLVE_POINTER = 0x0227C24C
+MIND_MASTER_EFFECT_CHECK_POINTER = 0x0227C530
+MIND_MASTER_EFFECT_RESOLVE_POINTER = 0x0227C534
+
+COMMON_FUSION_SUMMON_EFFECT_CHECK = 0x021F04AD
+BRIONAC_EFFECT_CHECK = 0x021F03DD
+BRIONAC_EFFECT_RESOLVE = 0x021EB5B9
+MIND_MASTER_EFFECT_CHECK = 0x021F7A71
+MIND_MASTER_EFFECT_RESOLVE = 0x021EB851
 
 CYBER_STEIN_OLD_DESCRIPTION = (
     b"Pay 5000 Life Points. Special Summon 1 Fusion Monster from your Extra Deck to the field in Attack Position."
 )
 CYBER_STEIN_NEW_DESCRIPTION = (
-    b"Pay half your Life Points. Special Summon 1 Fusion Monster from the Extra Deck in face-up Defense Position."
+    b"Once per turn: Pay half your LP. Special Summon 1 Fusion Monster from Extra Deck in open Defense Position. "
+)
+
+MAGICAL_SCIENTIST_OLD_DESCRIPTION = (
+    b"Pay 1000 Life Points to Special Summon 1 level 6 or lower Fusion Monster from your Extra Deck in face-up "
+    b"Attack or Defense Position. That Fusion Monster cannot attack your opponent's Life Points directly, and is "
+    b"returned to your Extra Deck at the end of the turn."
+)
+MAGICAL_SCIENTIST_NEW_DESCRIPTION = (
+    b"Once per turn: You can pay 1000 Life Points to Special Summon 1 Level 6 or lower Fusion Monster from your "
+    b"Extra Deck in face-up Attack or Defense Position. That Fusion Monster cannot attack directly, and it is "
+    b"returned to your Extra Deck at the end of this turn. "
+)
+
+MIND_MASTER_OLD_DESCRIPTION = (
+    b"You can pay 800 Life Points and Tribute 1 Psychic-Type monster, except \"Mind Master\", to Special Summon "
+    b"1 Level 4 or lower Psychic-Type monster from your Deck in face-up Attack Position."
+)
+MIND_MASTER_NEW_DESCRIPTION = (
+    b"Once per turn: Pay 800 Life Points and Tribute 1 Psychic-Type monster, except \"Mind Master\", to Special "
+    b"Summon 1 Level 4 or lower Psychic-Type monster from your Deck in Attack Position. "
+)
+
+BRIONAC_OLD_DESCRIPTION = (
+    b"1 Tuner + 1 or more non-Tuner monsters\r\n"
+    b"You can discard any number of cards to the Graveyard, to return the same number of cards from the field to "
+    b"the hand."
+)
+BRIONAC_NEW_DESCRIPTION = (
+    b"1 Tuner + 1 or more non-Tuner monsters\r\n"
+    b"Once per turn: Discard any number of cards to the Graveyard, then return that many cards from the field to "
+    b"the hand."
 )
 
 RING_OF_DESTRUCTION_OLD_DESCRIPTION = (
@@ -59,10 +115,47 @@ def thumb_bl(source_address: int, target_address: int) -> bytes:
 
 CYBER_STEIN_HALF_LP_COST_CAVE_BYTES = bytes.fromhex(
     """
-    28 88 08 49 88 42 0a d1 01 20 31 1c 01 40 06 48
-    0a 1c 42 43 05 48 80 58 44 10 20 1c 70 bd 04 49
-    70 47 00 00 4a 11 00 00 3c 0b 00 00 94 ad 29 02
-    a0 f2 26 02
+    28 88 03 49 88 42 01 d1 02 49 08 47 02 49 70 47
+    4a 11 00 00 15 4c 1e 02 a0 f2 26 02
+    """
+)
+
+CYBER_SCIENTIST_OPT_CHECK_CAVE_BYTES = bytes.fromhex(
+    """
+    16 b4 04 1c 21 8b 05 4a 52 6b 01 32 91 42 02 d1
+    00 20 16 bc 70 47 02 4b 20 1c 16 bc 18 47 7c ac
+    29 02 ad 04 1f 02
+    """
+)
+
+MIND_BRIONAC_OPT_CHECK_CAVE_BYTES = bytes.fromhex(
+    """
+    16 b4 04 1c 21 8b 09 4a 52 6b 01 32 91 42 02 d1
+    00 20 16 bc 70 47 20 88 05 4b 98 42 01 d0 05 4b
+    00 e0 05 4b 20 1c 16 bc 18 47 00 00 7c ac 29 02
+    22 1e 00 00 dd 03 1f 02 71 7a 1f 02
+    """
+)
+
+MIND_BRIONAC_OPT_MARK_RESOLVE_CAVE_BYTES = bytes.fromhex(
+    """
+    16 b4 04 1c 06 49 49 6b 01 31 21 83 20 88 05 4b
+    98 42 01 d0 04 4b 00 e0 04 4b 20 1c 16 bc 18 47
+    7c ac 29 02 22 1e 00 00 b9 b5 1e 02 51 b8 1e 02
+    """
+)
+
+CYBER_STEIN_OPT_MARK_SUMMON_CAVE_BYTES = bytes.fromhex(
+    """
+    06 b4 03 49 49 6b 01 31 21 83 06 bc 25 88 01 48
+    70 47 7c ac 29 02 42 0e 00 00
+    """
+)
+
+MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE_BYTES = bytes.fromhex(
+    """
+    06 b4 03 49 49 6b 01 31 21 83 06 bc 21 88 01 48
+    70 47 7c ac 29 02 81 14 00 00
     """
 )
 
@@ -83,14 +176,79 @@ ARM9_OVERLAY_PATCHES = {
             thumb_bl(CYBER_STEIN_HALF_LP_COST_HOOK, CYBER_STEIN_HALF_LP_COST_CAVE),
         ),
         (
+            CYBER_STEIN_OPT_MARK_SUMMON_HOOK,
+            bytes.fromhex("25 88 1c 48"),  # ldrh r5, [r4]; ldr r0, =0x00000E42
+            thumb_bl(CYBER_STEIN_OPT_MARK_SUMMON_HOOK, CYBER_STEIN_OPT_MARK_SUMMON_CAVE),
+        ),
+        (
             CYBER_STEIN_SUMMON_POSITION_PATCH,
             bytes.fromhex("00 26"),  # movs r6, #0: Attack Position
             bytes.fromhex("01 26"),  # movs r6, #1: face-up Defense Position
         ),
         (
+            MAGICAL_SCIENTIST_OPT_MARK_SUMMON_HOOK,
+            bytes.fromhex("21 88 0f 48"),  # ldrh r1, [r4]; ldr r0, =0x00001481
+            thumb_bl(MAGICAL_SCIENTIST_OPT_MARK_SUMMON_HOOK, MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE),
+        ),
+        (
+            CYBER_STEIN_EFFECT_CHECK_POINTER,
+            COMMON_FUSION_SUMMON_EFFECT_CHECK.to_bytes(4, "little"),
+            (CYBER_SCIENTIST_OPT_CHECK_CAVE | 1).to_bytes(4, "little"),
+        ),
+        (
+            MAGICAL_SCIENTIST_EFFECT_CHECK_POINTER,
+            COMMON_FUSION_SUMMON_EFFECT_CHECK.to_bytes(4, "little"),
+            (CYBER_SCIENTIST_OPT_CHECK_CAVE | 1).to_bytes(4, "little"),
+        ),
+        (
+            BRIONAC_EFFECT_CHECK_POINTER,
+            BRIONAC_EFFECT_CHECK.to_bytes(4, "little"),
+            (MIND_BRIONAC_OPT_CHECK_CAVE | 1).to_bytes(4, "little"),
+        ),
+        (
+            BRIONAC_EFFECT_RESOLVE_POINTER,
+            BRIONAC_EFFECT_RESOLVE.to_bytes(4, "little"),
+            (MIND_BRIONAC_OPT_MARK_RESOLVE_CAVE | 1).to_bytes(4, "little"),
+        ),
+        (
+            MIND_MASTER_EFFECT_CHECK_POINTER,
+            MIND_MASTER_EFFECT_CHECK.to_bytes(4, "little"),
+            (MIND_BRIONAC_OPT_CHECK_CAVE | 1).to_bytes(4, "little"),
+        ),
+        (
+            MIND_MASTER_EFFECT_RESOLVE_POINTER,
+            MIND_MASTER_EFFECT_RESOLVE.to_bytes(4, "little"),
+            (MIND_BRIONAC_OPT_MARK_RESOLVE_CAVE | 1).to_bytes(4, "little"),
+        ),
+        (
+            CYBER_SCIENTIST_OPT_CHECK_CAVE,
+            bytes(len(CYBER_SCIENTIST_OPT_CHECK_CAVE_BYTES)),
+            CYBER_SCIENTIST_OPT_CHECK_CAVE_BYTES,
+        ),
+        (
             CYBER_STEIN_HALF_LP_COST_CAVE,
             bytes(len(CYBER_STEIN_HALF_LP_COST_CAVE_BYTES)),
             CYBER_STEIN_HALF_LP_COST_CAVE_BYTES,
+        ),
+        (
+            MIND_BRIONAC_OPT_CHECK_CAVE,
+            bytes(len(MIND_BRIONAC_OPT_CHECK_CAVE_BYTES)),
+            MIND_BRIONAC_OPT_CHECK_CAVE_BYTES,
+        ),
+        (
+            MIND_BRIONAC_OPT_MARK_RESOLVE_CAVE,
+            bytes(len(MIND_BRIONAC_OPT_MARK_RESOLVE_CAVE_BYTES)),
+            MIND_BRIONAC_OPT_MARK_RESOLVE_CAVE_BYTES,
+        ),
+        (
+            CYBER_STEIN_OPT_MARK_SUMMON_CAVE,
+            bytes(len(CYBER_STEIN_OPT_MARK_SUMMON_CAVE_BYTES)),
+            CYBER_STEIN_OPT_MARK_SUMMON_CAVE_BYTES,
+        ),
+        (
+            MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE,
+            bytes(len(MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE_BYTES)),
+            MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE_BYTES,
         ),
     ],
 }
@@ -119,6 +277,8 @@ LIMIT_CHANGES = [
     ("Trap Dustshoot", 0x1546, FORBIDDEN),
     ("Royal Tribute", 0x15A4, LIMITED),
     ("Cyber-Stein", CYBER_STEIN, LIMITED),
+    ("Magical Scientist", MAGICAL_SCIENTIST, LIMITED),
+    ("Premature Burial", PREMATURE_BURIAL, LIMITED),
     ("Deck Devastation Virus", 0x188C, LIMITED),
     ("Metamorphosis", 0x15A3, LIMITED),
     ("Dark Magician of Chaos", 0x16F8, LIMITED),
@@ -178,6 +338,7 @@ LIMIT_CHANGES = [
     ("Dewloren, Tiger King of the Ice Barrier", 0x1F22, UNLIMITED),
     ("Gold Sarcophagus", 0x1811, UNLIMITED),
     ("Makyura the Destructor", MAKYURA_THE_DESTRUCTOR, UNLIMITED),
+    ("Mind Master", MIND_MASTER, UNLIMITED),
     ("Tragoedia", 0x1F99, UNLIMITED),
     ("Allure of Darkness", 0x1D92, UNLIMITED),
     ("Destiny Draw", 0x1B26, UNLIMITED),
@@ -430,6 +591,24 @@ def patch_card_desc_e(desc_data: bytearray) -> None:
         CYBER_STEIN_OLD_DESCRIPTION,
         CYBER_STEIN_NEW_DESCRIPTION,
         "Cyber-Stein English description",
+    )
+    replace_unique(
+        desc_data,
+        MAGICAL_SCIENTIST_OLD_DESCRIPTION,
+        MAGICAL_SCIENTIST_NEW_DESCRIPTION,
+        "Magical Scientist English description",
+    )
+    replace_unique(
+        desc_data,
+        MIND_MASTER_OLD_DESCRIPTION,
+        MIND_MASTER_NEW_DESCRIPTION,
+        "Mind Master English description",
+    )
+    replace_unique(
+        desc_data,
+        BRIONAC_OLD_DESCRIPTION,
+        BRIONAC_NEW_DESCRIPTION,
+        "Brionac, Dragon of the Ice Barrier English description",
     )
 
 
