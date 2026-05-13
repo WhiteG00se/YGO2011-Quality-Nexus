@@ -39,6 +39,8 @@ MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE = 0x0226C8C2
 CYBER_SCIENTIST_OPT_CHECK_CAVE = 0x0226CB96
 MIND_BRIONAC_OPT_CHECK_CAVE = 0x0226C924
 MIND_BRIONAC_OPT_MARK_RESOLVE_CAVE = 0x02294180
+DECK_EDITOR_NORMALIZE_CARD_COUNT_CAVE = 0x02172FE8
+CARD_COUNT_GETTER = 0x0202AFF8
 
 CYBER_STEIN_EFFECT_CHECK_POINTER = 0x0227A2F8
 CYBER_STEIN_EFFECT_RESOLVE_POINTER = 0x0227A2FC
@@ -113,6 +115,29 @@ def thumb_bl(source_address: int, target_address: int) -> bytes:
     return high_halfword.to_bytes(2, "little") + low_halfword.to_bytes(2, "little")
 
 
+def arm_bl(source_address: int, target_address: int) -> bytes:
+    offset = target_address - (source_address + 8)
+    if offset % 4:
+        raise ValueError(f"ARM BL target {target_address:#010x} is not word-aligned.")
+    if offset < -(1 << 25) or offset >= (1 << 25):
+        raise ValueError(f"ARM BL target {target_address:#010x} is out of range from {source_address:#010x}.")
+
+    immediate = (offset >> 2) & 0xFFFFFF
+    return (0xEB000000 | immediate).to_bytes(4, "little")
+
+
+def arm_blx(source_address: int, target_address: int) -> bytes:
+    offset = target_address - (source_address + 8)
+    if offset % 2:
+        raise ValueError(f"ARM BLX target {target_address:#010x} is not halfword-aligned.")
+    if offset < -(1 << 25) or offset >= (1 << 25):
+        raise ValueError(f"ARM BLX target {target_address:#010x} is out of range from {source_address:#010x}.")
+
+    h = (offset >> 1) & 1
+    immediate = (offset >> 2) & 0xFFFFFF
+    return (0xFA000000 | (h << 24) | immediate).to_bytes(4, "little")
+
+
 CYBER_STEIN_HALF_LP_COST_CAVE_BYTES = bytes.fromhex(
     """
     28 88 03 49 88 42 01 d1 02 49 08 47 02 49 70 47
@@ -159,11 +184,48 @@ MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE_BYTES = bytes.fromhex(
     """
 )
 
+DECK_EDITOR_NORMALIZE_CARD_COUNT_CAVE_BYTES = (
+    bytes.fromhex("04 e0 2d e5")
+    + arm_blx(DECK_EDITOR_NORMALIZE_CARD_COUNT_CAVE + 4, CARD_COUNT_GETTER)
+    + bytes.fromhex(
+        """
+        00 00 50 e3 03 00 a0 13 00 80 bd e8
+        """
+    )
+)
+
 CARD_STAT_CHANGES = [
     ("Makyura the Destructor", MAKYURA_THE_DESTRUCTOR, 0x28, 0x3C, 0x2F, 0x5F),
 ]
 
 ARM9_OVERLAY_PATCHES = {
+    8: [
+        (
+            0x021544A0,
+            arm_blx(0x021544A0, CARD_COUNT_GETTER),
+            arm_bl(0x021544A0, DECK_EDITOR_NORMALIZE_CARD_COUNT_CAVE),
+        ),
+        (
+            0x021545D4,
+            arm_blx(0x021545D4, CARD_COUNT_GETTER),
+            arm_bl(0x021545D4, DECK_EDITOR_NORMALIZE_CARD_COUNT_CAVE),
+        ),
+        (
+            0x021546B4,
+            arm_blx(0x021546B4, CARD_COUNT_GETTER),
+            arm_bl(0x021546B4, DECK_EDITOR_NORMALIZE_CARD_COUNT_CAVE),
+        ),
+        (
+            0x02166470,
+            arm_blx(0x02166470, CARD_COUNT_GETTER),
+            arm_bl(0x02166470, DECK_EDITOR_NORMALIZE_CARD_COUNT_CAVE),
+        ),
+        (
+            DECK_EDITOR_NORMALIZE_CARD_COUNT_CAVE,
+            bytes(len(DECK_EDITOR_NORMALIZE_CARD_COUNT_CAVE_BYTES)),
+            DECK_EDITOR_NORMALIZE_CARD_COUNT_CAVE_BYTES,
+        ),
+    ],
     3: [
         (
             0x02210662,

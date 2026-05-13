@@ -17,6 +17,7 @@ YGO2011-Over_The_Nexus_USA_unpatched.nds (Source File)<br>
 
 - Quality_Patch (the patch of this repo)
   - `List - September, 2010` => `Quality List - 2010`
+  - The deck editor treats owned cards as exactly 3 copies, while cards at 0 copies stay unobtained.
   - Bots play with `List - September, 2010`, but with the following changes:
     - if there are 2 or more Mystical Space Typhoons, change one of them to Heavy Storm, else add Heavy Storm to the deck
 
