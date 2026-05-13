@@ -2,9 +2,10 @@
 
 Only US version and English have been tested.
 
-YGO2011-Over_The_Nexus_USA_unpatched.nds<br>
-\+ YGO.Nexus.Revival.0.5.xdelta<br>
-\+ Quality_Patch.xdelta<br>
+I recommend using [xdelta-wasm](https://kotcrab.github.io/xdelta-wasm):
+YGO2011-Over_The_Nexus_USA_unpatched.nds (Source File)<br>
+\+ YGO.Nexus.Revival.0.5.xdelta (apply this patch first)<br>
+\+ Quality_Patch.xdelta (then apply this 2nd patch on the result)<br>
 = YGO2011-Quality-Nexus.nds
 
 ## Changes
