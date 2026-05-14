@@ -24,6 +24,10 @@ BRIONAC_DRAGON_OF_THE_ICE_BARRIER = 0x1D7C
 MIND_MASTER = 0x1E22
 PREMATURE_BURIAL = 0x1366
 RING_OF_DESTRUCTION = 0x138D
+POLYMERIZATION = 0x12E5
+REINFORCEMENT_OF_THE_ARMY = 0x14D0
+E_EMERGENCY_CALL = 0x1A10
+SHIENS_SMOKE_SIGNAL = 0x247B
 
 HEAVY_STORM = 0x131B
 MYSTICAL_SPACE_TYPHOON = 0x132D
@@ -53,14 +57,18 @@ CYBER_STEIN_HALF_LP_COST_HOOK = 0x021E4A20
 CYBER_STEIN_HALF_LP_COST_CAVE = 0x0226CBBC
 CYBER_STEIN_SUMMON_POSITION_PATCH = 0x0220B0B6
 CYBER_STEIN_OPT_MARK_SUMMON_HOOK = 0x0220B0A0
-CYBER_STEIN_OPT_MARK_SUMMON_CAVE = 0x0226C8A6
+CYBER_STEIN_OPT_MARK_SUMMON_CAVE = 0x02294180
 MAGICAL_SCIENTIST_OPT_MARK_SUMMON_HOOK = 0x02213226
-MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE = 0x0226C8C2
+MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE = 0x0229419A
 CYBER_SCIENTIST_OPT_CHECK_CAVE = 0x0226CB96
-MIND_BRIONAC_OPT_CHECK_CAVE = 0x0226C924
-MIND_BRIONAC_OPT_MARK_RESOLVE_CAVE = 0x02294180
+MIND_BRIONAC_OPT_CHECK_CAVE = 0x0226C8A6
+MIND_BRIONAC_OPT_MARK_RESOLVE_CAVE = 0x0226C924
+POLYMERIZATION_FUSION_SUMMON_HOOK = 0x022336E4
+POLYMERIZATION_DRAW_AFTER_FUSION_CAVE = 0x0226C954
 DECK_EDITOR_NORMALIZE_CARD_COUNT_CAVE = 0x02172FE8
 CARD_COUNT_GETTER = 0x0202AFF8
+DRAW_CARDS = 0x021D13EC
+FUSION_SPECIAL_SUMMON = 0x0226940C
 
 CYBER_STEIN_EFFECT_CHECK_POINTER = 0x0227A2F8
 CYBER_STEIN_EFFECT_RESOLVE_POINTER = 0x0227A2FC
@@ -120,6 +128,15 @@ RING_OF_DESTRUCTION_OLD_DESCRIPTION = (
 RING_OF_DESTRUCTION_NEW_DESCRIPTION = (
     b"Select and destroy 1 face-up monster. Opponent gains LP equal to its ATK; you take damage."
 )
+
+POLYMERIZATION_OLD_DESCRIPTION = (
+    b"Send Fusion Material Monsters that are listed on a Fusion Monster Card from your hand or your side of the "
+    b"field to the Graveyard, and Special Summon the Fusion Monster from your Extra Deck."
+)
+POLYMERIZATION_NEW_DESCRIPTION = (
+    b"Fusion Summon 1 Fusion Monster by sending listed materials from your hand or field to the Graveyard. "
+    b"If successful, draw 1 card."
+).ljust(len(POLYMERIZATION_OLD_DESCRIPTION), b" ")
 
 
 def thumb_bl(source_address: int, target_address: int) -> bytes:
@@ -204,6 +221,14 @@ MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE_BYTES = bytes.fromhex(
     """
 )
 
+POLYMERIZATION_DRAW_AFTER_FUSION_CAVE_BYTES = (
+    bytes.fromhex("10 b5")
+    + thumb_bl(POLYMERIZATION_DRAW_AFTER_FUSION_CAVE + 2, FUSION_SPECIAL_SUMMON)
+    + bytes.fromhex("20 1c 01 21")
+    + thumb_bl(POLYMERIZATION_DRAW_AFTER_FUSION_CAVE + 10, DRAW_CARDS)
+    + bytes.fromhex("10 bd")
+)
+
 DECK_EDITOR_NORMALIZE_CARD_COUNT_CAVE_BYTES = (
     bytes.fromhex("04 e0 2d e5")
     + arm_blx(DECK_EDITOR_NORMALIZE_CARD_COUNT_CAVE + 4, CARD_COUNT_GETTER)
@@ -273,6 +298,11 @@ ARM9_OVERLAY_PATCHES = {
             thumb_bl(MAGICAL_SCIENTIST_OPT_MARK_SUMMON_HOOK, MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE),
         ),
         (
+            POLYMERIZATION_FUSION_SUMMON_HOOK,
+            thumb_bl(POLYMERIZATION_FUSION_SUMMON_HOOK, FUSION_SPECIAL_SUMMON),
+            thumb_bl(POLYMERIZATION_FUSION_SUMMON_HOOK, POLYMERIZATION_DRAW_AFTER_FUSION_CAVE),
+        ),
+        (
             CYBER_STEIN_EFFECT_CHECK_POINTER,
             COMMON_FUSION_SUMMON_EFFECT_CHECK.to_bytes(4, "little"),
             (CYBER_SCIENTIST_OPT_CHECK_CAVE | 1).to_bytes(4, "little"),
@@ -332,6 +362,11 @@ ARM9_OVERLAY_PATCHES = {
             bytes(len(MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE_BYTES)),
             MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE_BYTES,
         ),
+        (
+            POLYMERIZATION_DRAW_AFTER_FUSION_CAVE,
+            bytes(len(POLYMERIZATION_DRAW_AFTER_FUSION_CAVE_BYTES)),
+            POLYMERIZATION_DRAW_AFTER_FUSION_CAVE_BYTES,
+        ),
     ],
 }
 
@@ -346,6 +381,7 @@ LIMIT_CHANGES = [
     ("Exodia the Forbidden One", 0x0FBB, FORBIDDEN),
     ("Black Luster Soldier - Envoy of the Beginning", 0x16CB, FORBIDDEN),
     ("Cold Wave", 0x1407, FORBIDDEN),
+    ("E - Emergency Call", E_EMERGENCY_CALL, FORBIDDEN),
     ("Gravity Bind", 0x140E, FORBIDDEN),
     ("Symbol of Heritage", 0x19D7, FORBIDDEN),
     ("Ojama Trio", 0x166A, FORBIDDEN),
@@ -356,6 +392,7 @@ LIMIT_CHANGES = [
     ("Level Limit - Area B", 0x17A6, FORBIDDEN),
     ("Final Countdown", 0x169C, FORBIDDEN),
     ("Gateway of the Six", 0x219A, FORBIDDEN),
+    ("Shien's Smoke Signal", SHIENS_SMOKE_SIGNAL, FORBIDDEN),
     ("Trap Dustshoot", 0x1546, FORBIDDEN),
     ("Royal Tribute", 0x15A4, LIMITED),
     ("Cyber-Stein", CYBER_STEIN, LIMITED),
@@ -380,7 +417,6 @@ LIMIT_CHANGES = [
     ("Magic Cylinder", 0x1404, LIMITED),
     ("Gladiator Beast War Chariot", 0x1E53, LIMITED),
     ("Skill Drain", 0x166C, LIMITED),
-    ("Shien's Smoke Signal", 0x247B, LIMITED),
     ("Magician of Faith", 0x1152, SEMI_LIMITED),
     ("Tribe-Infecting Virus", 0x161C, SEMI_LIMITED),
     ("Card Trooper", 0x1B1B, SEMI_LIMITED),
@@ -396,6 +432,7 @@ LIMIT_CHANGES = [
     ("One for One", 0x2005, SEMI_LIMITED),
     ("Megamorph", 0x1237, SEMI_LIMITED),
     ("Reasoning", 0x159A, SEMI_LIMITED),
+    ("Reinforcement of the Army", REINFORCEMENT_OF_THE_ARMY, SEMI_LIMITED),
     ("Scapegoat", 0x12D2, SEMI_LIMITED),
     ("Book of Moon", 0x1538, SEMI_LIMITED),
     ("Advanced Ritual Art", 0x1B54, SEMI_LIMITED),
@@ -667,6 +704,12 @@ def patch_card_desc_e(desc_data: bytearray) -> None:
         RING_OF_DESTRUCTION_OLD_DESCRIPTION,
         RING_OF_DESTRUCTION_NEW_DESCRIPTION,
         "Ring of Destruction English description",
+    )
+    replace_unique(
+        desc_data,
+        POLYMERIZATION_OLD_DESCRIPTION,
+        POLYMERIZATION_NEW_DESCRIPTION,
+        "Polymerization English description",
     )
     replace_unique(
         desc_data,

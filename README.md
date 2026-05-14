@@ -114,7 +114,6 @@ Sorted by (ascending) Sep 2010, Quality List, Cardname.
 | [Neo-Spacian Grand Mole](https://yugipedia.com/wiki/Neo-Spacian_Grand_Mole) | 1 | 1 |  |
 | [Overload Fusion](https://yugipedia.com/wiki/Overload_Fusion) | 1 | 1 |  |
 | [Plaguespreader Zombie](https://yugipedia.com/wiki/Plaguespreader_Zombie) | 1 | 1 |  |
-| [Reinforcement of the Army](https://yugipedia.com/wiki/Reinforcement_of_the_Army) | 1 | 1 |  |
 | [Solemn Judgment](https://yugipedia.com/wiki/Solemn_Judgment) | 1 | 1 |  |
 | [Spirit Reaper](https://yugipedia.com/wiki/Spirit_Reaper) | 1 | 1 |  |
 | [Swords of Revealing Light](https://yugipedia.com/wiki/Swords_of_Revealing_Light) | 1 | 1 |  |
@@ -134,6 +133,7 @@ Sorted by (ascending) Sep 2010, Quality List, Cardname.
 | [Night Assailant](https://yugipedia.com/wiki/Night_Assailant) | 1 | 2 |  |
 | [One for One](https://yugipedia.com/wiki/One_for_One) | 1 | 2 |  |
 | [Reasoning](https://yugipedia.com/wiki/Reasoning) | 1 | 2 |  |
+| [Reinforcement of the Army](https://yugipedia.com/wiki/Reinforcement_of_the_Army) | 1 | 2 | E - Emergency Call 3 => 0<br>Shien's Smoke Signal 3 => 0 |
 | [Return from the Different Dimension](https://yugipedia.com/wiki/Return_from_the_Different_Dimension) | 1 | 2 |  |
 | [Sangan](https://yugipedia.com/wiki/Sangan) | 1 | 2 |  |
 | [Scapegoat](https://yugipedia.com/wiki/Scapegoat) | 1 | 2 |  |
@@ -166,20 +166,22 @@ Sorted by (ascending) Sep 2010, Quality List, Cardname.
 | [Magical Stone Excavation](https://yugipedia.com/wiki/Magical_Stone_Excavation) | 2 | 3 |  |
 | [Snipe Hunter](https://yugipedia.com/wiki/Snipe_Hunter) | 2 | 3 |  |
 | [Ultimate Offering](https://yugipedia.com/wiki/Ultimate_Offering) | 2 | 3 |  |
+| [E - Emergency Call](https://yugipedia.com/wiki/E_-_Emergency_Call) | 3 | 0 | Reinforcement of the Army 1 => 2 |
 | [Final Countdown](https://yugipedia.com/wiki/Final_Countdown) | 3 | 0 |  |
 | [Gateway of the Six](https://yugipedia.com/wiki/Gateway_of_the_Six) | 3 | 0 |  |
+| [Shien's Smoke Signal](https://yugipedia.com/wiki/Shien%27s_Smoke_Signal) | 3 | 0 | Reinforcement of the Army 1 => 2 |
 | [Symbol of Heritage](https://yugipedia.com/wiki/Symbol_of_Heritage) | 3 | 0 |  |
 | [Blackwing - Kalut the Moon Shadow](https://yugipedia.com/wiki/Blackwing_-_Kalut_the_Moon_Shadow) | 3 | 1 |  |
 | [Deck Devastation Virus](https://yugipedia.com/wiki/Deck_Devastation_Virus) | 3 | 1 |  |
 | [Gladiator Beast War Chariot](https://yugipedia.com/wiki/Gladiator_Beast_War_Chariot) | 3 | 1 |  |
 | [Morphing Jar #2](https://yugipedia.com/wiki/Morphing_Jar_%232) | 3 | 1 |  |
 | [Royal Tribute](https://yugipedia.com/wiki/Royal_Tribute) | 3 | 1 |  |
-| [Shien's Smoke Signal](https://yugipedia.com/wiki/Shien%27s_Smoke_Signal) | 3 | 1 |  |
 | [Book of Moon](https://yugipedia.com/wiki/Book_of_Moon) | 3 | 2 |  |
 | [Debris Dragon](https://yugipedia.com/wiki/Debris_Dragon) | 3 | 2 |  |
 | [Dimensional Fissure](https://yugipedia.com/wiki/Dimensional_Fissure) | 3 | 2 |  |
 | [Eradicator Epidemic Virus](https://yugipedia.com/wiki/Eradicator_Epidemic_Virus) | 3 | 2 |  |
 | [Macro Cosmos](https://yugipedia.com/wiki/Macro_Cosmos) | 3 | 2 |  |
+| [Polymerization](https://yugipedia.com/wiki/Polymerization) | 3 | 3 | Draw 1 card if resolved successfully. |
 
 </details>
 
