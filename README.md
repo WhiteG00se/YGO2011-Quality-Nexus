@@ -1,12 +1,15 @@
-## YGO2011-Quality-Nexus
+# YGO2011-Quality-Nexus
 
-Only US version and English have been tested.
+## Install the mod
 
-I recommend using [xdelta-wasm](https://kotcrab.github.io/xdelta-wasm):<br>
-YGO2011-Over_The_Nexus_USA_unpatched.nds (Source File)<br>
-\+ YGO.Nexus.Revival.0.5.xdelta (apply this patch first)<br>
-\+ Quality_Patch.xdelta (then apply this 2nd patch on the result)<br>
-= YGO2011-Quality-Nexus.nds
+Use a clean US `Yu-Gi-Oh! 5D's World Championship 2011: Over the Nexus` ROM as the source file.
+Only the US version in English has been tested.
+
+I recommend [xdelta-wasm](https://kotcrab.github.io/xdelta-wasm) for patching in a browser:
+
+1. Apply `YGO.Nexus.Revival.0.5.xdelta` to `YGO2011-Over_The_Nexus_USA_unpatched.nds`.
+2. Apply `Quality_Patch.xdelta` to the ROM created in step 1.
+3. The final ROM is `YGO2011-Quality-Nexus.nds`.
 
 ## Changes
 
@@ -17,12 +20,13 @@ YGO2011-Over_The_Nexus_USA_unpatched.nds (Source File)<br>
 
 - Quality_Patch (the patch of this repo)
   - `List - September, 2010` => `Quality List - 2010`
+  - Minor errata for some cards (overview is in the table below)
   - The deck editor treats owned cards as exactly 3 copies, while cards at 0 copies stay unobtained.
   - Bots play with `List - September, 2010`, but with the following changes:
     - if there are 2 or more Mystical Space Typhoons, change one of them to Heavy Storm, else add Heavy Storm to the deck
 
 <details>
-<summary>Quality List - 2010 card limits</summary>
+<summary>Quality List - 2010 limits and erratas</summary>
 
 The table includes every card from the September 2010 list, plus every card changed by this mod.
 Sorted by (ascending) Sep 2010, Quality List, Cardname.
@@ -178,4 +182,26 @@ Sorted by (ascending) Sep 2010, Quality List, Cardname.
 
 </details>
 
-## Technical details are in `dev_readme.md`.
+## Development workflow
+
+For local development, put `xdelta3.exe` at `tools\bin\xdelta3.exe`, create the Python virtual environment at `.venv`, and install `requirements.txt`.
+
+You can run `_build-Quality-Nexus.ps1` from Explorer if your Windows setup runs `.ps1` files from double-click. The script pauses by default so the output stays visible.
+
+For terminal or automation use:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\_build-Quality-Nexus.ps1 -NoPause
+```
+
+The build script applies the Nexus Revival patch, builds this repo's Quality ROM, recreates `Quality_Patch.xdelta`, validates the patch output, and prints SHA256 hashes for the important files.
+
+You can also run the individual steps:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\apply-revival-patch.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\create-xdelta-as-diff.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\validate-xdelta.ps1
+```
+
+Project guidance for future coding agents is in `AGENTS.md`.
