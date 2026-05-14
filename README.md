@@ -1,4 +1,4 @@
-# YGO2011-Quality-Nexus
+﻿# YGO2011-Quality-Nexus
 
 ## Install the mod
 
@@ -30,10 +30,21 @@ I recommend [xdelta-wasm](https://kotcrab.github.io/xdelta-wasm) for patching in
 <summary>Quality List - 2010 limits and erratas</summary>
 
 The table includes every card from the September 2010 list, plus every card changed by this mod.
-Sorted by (ascending) Sep 2010, Quality List, Cardname.
+Sorted by (ascending) Comment, Sep 2010, Quality List, Cardname.
 
 | Cardname | Sep 2010 | Quality List | Comment |
 | --- | ---: | ---: | --- |
+| [Cyber-Stein](https://yugipedia.com/wiki/Cyber-Stein) | 0 | 1 | Once per turn; pays half your LP; summons in face-up Defense Position. |
+| [Magical Scientist](https://yugipedia.com/wiki/Magical_Scientist) | 0 | 1 | Once per turn. |
+| [Premature Burial](https://yugipedia.com/wiki/Premature_Burial) | 0 | 1 | Brionac was changed to once per turn. |
+| [Ring of Destruction](https://yugipedia.com/wiki/Ring_of_Destruction) | 0 | 1 | Opponent gains LP equal to the monster's ATK; you take damage. |
+| [Makyura the Destructor](https://yugipedia.com/wiki/Makyura_the_Destructor) | 0 | 3 | ATK/DEF => 1900. |
+| [Brionac, Dragon of the Ice Barrier](https://yugipedia.com/wiki/Brionac%2C_Dragon_of_the_Ice_Barrier) | 1 | 1 | Once per turn. |
+| [Reinforcement of the Army](https://yugipedia.com/wiki/Reinforcement_of_the_Army) | 1 | 2 | E - Emergency Call 3 => 0<br>Shien's Smoke Signal 3 => 0 |
+| [Mind Master](https://yugipedia.com/wiki/Mind_Master) | 1 | 3 | Once per turn. |
+| [E - Emergency Call](https://yugipedia.com/wiki/E_-_Emergency_Call) | 3 | 0 | Reinforcement of the Army 1 => 2 |
+| [Shien's Smoke Signal](https://yugipedia.com/wiki/Shien%27s_Smoke_Signal) | 3 | 0 | Reinforcement of the Army 1 => 2 |
+| [Polymerization](https://yugipedia.com/wiki/Polymerization) | 3 | 3 | Draw 1 card if resolved successfully. |
 | [Black Luster Soldier - Envoy of the Beginning](https://yugipedia.com/wiki/Black_Luster_Soldier_-_Envoy_of_the_Beginning) | 0 | 0 |  |
 | [Brain Control](https://yugipedia.com/wiki/Brain_Control) | 0 | 0 |  |
 | [Butterfly Dagger - Elma](https://yugipedia.com/wiki/Butterfly_Dagger_-_Elma) | 0 | 0 |  |
@@ -63,22 +74,17 @@ Sorted by (ascending) Sep 2010, Quality List, Cardname.
 | [Victory Dragon](https://yugipedia.com/wiki/Victory_Dragon) | 0 | 0 |  |
 | [Witch of the Black Forest](https://yugipedia.com/wiki/Witch_of_the_Black_Forest) | 0 | 0 |  |
 | [Yata-Garasu](https://yugipedia.com/wiki/Yata-Garasu) | 0 | 0 |  |
-| [Cyber-Stein](https://yugipedia.com/wiki/Cyber-Stein) | 0 | 1 | Once per turn; pays half your LP; summons in face-up Defense Position. |
 | [Dark Magician of Chaos](https://yugipedia.com/wiki/Dark_Magician_of_Chaos) | 0 | 1 |  |
 | [Dark Strike Fighter](https://yugipedia.com/wiki/Dark_Strike_Fighter) | 0 | 1 |  |
 | [Heavy Storm](https://yugipedia.com/wiki/Heavy_Storm) | 0 | 1 |  |
 | [Last Will](https://yugipedia.com/wiki/Last_Will) | 0 | 1 |  |
-| [Magical Scientist](https://yugipedia.com/wiki/Magical_Scientist) | 0 | 1 | Once per turn. |
 | [Metamorphosis](https://yugipedia.com/wiki/Metamorphosis) | 0 | 1 |  |
-| [Premature Burial](https://yugipedia.com/wiki/Premature_Burial) | 0 | 1 |  |
 | [Rescue Cat](https://yugipedia.com/wiki/Rescue_Cat) | 0 | 1 |  |
-| [Ring of Destruction](https://yugipedia.com/wiki/Ring_of_Destruction) | 0 | 1 | Opponent gains LP equal to the monster's ATK; you take damage. |
 | [Sinister Serpent](https://yugipedia.com/wiki/Sinister_Serpent) | 0 | 1 |  |
 | [Substitoad](https://yugipedia.com/wiki/Substitoad) | 0 | 1 |  |
 | [Magician of Faith](https://yugipedia.com/wiki/Magician_of_Faith) | 0 | 2 |  |
 | [Tribe-Infecting Virus](https://yugipedia.com/wiki/Tribe-Infecting_Virus) | 0 | 2 |  |
 | [Tsukuyomi](https://yugipedia.com/wiki/Tsukuyomi) | 0 | 2 |  |
-| [Makyura the Destructor](https://yugipedia.com/wiki/Makyura_the_Destructor) | 0 | 3 | ATK/DEF 1900. |
 | [Temple of the Kings](https://yugipedia.com/wiki/Temple_of_the_Kings) | 0 | 3 |  |
 | [Time Seal](https://yugipedia.com/wiki/Time_Seal) | 0 | 3 |  |
 | [Cold Wave](https://yugipedia.com/wiki/Cold_Wave) | 1 | 0 |  |
@@ -91,7 +97,6 @@ Sorted by (ascending) Sep 2010, Quality List, Cardname.
 | [Wall of Revealing Light](https://yugipedia.com/wiki/Wall_of_Revealing_Light) | 1 | 0 |  |
 | [Black Whirlwind](https://yugipedia.com/wiki/Black_Whirlwind) | 1 | 1 |  |
 | [Blackwing - Gale the Whirlwind](https://yugipedia.com/wiki/Blackwing_-_Gale_the_Whirlwind) | 1 | 1 |  |
-| [Brionac, Dragon of the Ice Barrier](https://yugipedia.com/wiki/Brionac%2C_Dragon_of_the_Ice_Barrier) | 1 | 1 | Once per turn. |
 | [Call of the Haunted](https://yugipedia.com/wiki/Call_of_the_Haunted) | 1 | 1 |  |
 | [Card Destruction](https://yugipedia.com/wiki/Card_Destruction) | 1 | 1 |  |
 | [Ceasefire](https://yugipedia.com/wiki/Ceasefire) | 1 | 1 |  |
@@ -133,7 +138,6 @@ Sorted by (ascending) Sep 2010, Quality List, Cardname.
 | [Night Assailant](https://yugipedia.com/wiki/Night_Assailant) | 1 | 2 |  |
 | [One for One](https://yugipedia.com/wiki/One_for_One) | 1 | 2 |  |
 | [Reasoning](https://yugipedia.com/wiki/Reasoning) | 1 | 2 |  |
-| [Reinforcement of the Army](https://yugipedia.com/wiki/Reinforcement_of_the_Army) | 1 | 2 | E - Emergency Call 3 => 0<br>Shien's Smoke Signal 3 => 0 |
 | [Return from the Different Dimension](https://yugipedia.com/wiki/Return_from_the_Different_Dimension) | 1 | 2 |  |
 | [Sangan](https://yugipedia.com/wiki/Sangan) | 1 | 2 |  |
 | [Scapegoat](https://yugipedia.com/wiki/Scapegoat) | 1 | 2 |  |
@@ -141,7 +145,6 @@ Sorted by (ascending) Sep 2010, Quality List, Cardname.
 | [Destiny Draw](https://yugipedia.com/wiki/Destiny_Draw) | 1 | 3 |  |
 | [Left Arm of the Forbidden One](https://yugipedia.com/wiki/Left_Arm_of_the_Forbidden_One) | 1 | 3 |  |
 | [Left Leg of the Forbidden One](https://yugipedia.com/wiki/Left_Leg_of_the_Forbidden_One) | 1 | 3 |  |
-| [Mind Master](https://yugipedia.com/wiki/Mind_Master) | 1 | 3 | Once per turn. |
 | [Monster Gate](https://yugipedia.com/wiki/Monster_Gate) | 1 | 3 |  |
 | [Right Arm of the Forbidden One](https://yugipedia.com/wiki/Right_Arm_of_the_Forbidden_One) | 1 | 3 |  |
 | [Right Leg of the Forbidden One](https://yugipedia.com/wiki/Right_Leg_of_the_Forbidden_One) | 1 | 3 |  |
@@ -166,10 +169,8 @@ Sorted by (ascending) Sep 2010, Quality List, Cardname.
 | [Magical Stone Excavation](https://yugipedia.com/wiki/Magical_Stone_Excavation) | 2 | 3 |  |
 | [Snipe Hunter](https://yugipedia.com/wiki/Snipe_Hunter) | 2 | 3 |  |
 | [Ultimate Offering](https://yugipedia.com/wiki/Ultimate_Offering) | 2 | 3 |  |
-| [E - Emergency Call](https://yugipedia.com/wiki/E_-_Emergency_Call) | 3 | 0 | Reinforcement of the Army 1 => 2 |
 | [Final Countdown](https://yugipedia.com/wiki/Final_Countdown) | 3 | 0 |  |
 | [Gateway of the Six](https://yugipedia.com/wiki/Gateway_of_the_Six) | 3 | 0 |  |
-| [Shien's Smoke Signal](https://yugipedia.com/wiki/Shien%27s_Smoke_Signal) | 3 | 0 | Reinforcement of the Army 1 => 2 |
 | [Symbol of Heritage](https://yugipedia.com/wiki/Symbol_of_Heritage) | 3 | 0 |  |
 | [Blackwing - Kalut the Moon Shadow](https://yugipedia.com/wiki/Blackwing_-_Kalut_the_Moon_Shadow) | 3 | 1 |  |
 | [Deck Devastation Virus](https://yugipedia.com/wiki/Deck_Devastation_Virus) | 3 | 1 |  |
@@ -181,7 +182,6 @@ Sorted by (ascending) Sep 2010, Quality List, Cardname.
 | [Dimensional Fissure](https://yugipedia.com/wiki/Dimensional_Fissure) | 3 | 2 |  |
 | [Eradicator Epidemic Virus](https://yugipedia.com/wiki/Eradicator_Epidemic_Virus) | 3 | 2 |  |
 | [Macro Cosmos](https://yugipedia.com/wiki/Macro_Cosmos) | 3 | 2 |  |
-| [Polymerization](https://yugipedia.com/wiki/Polymerization) | 3 | 3 | Draw 1 card if resolved successfully. |
 
 </details>
 
