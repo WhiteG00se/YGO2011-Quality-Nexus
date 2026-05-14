@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 import ndspy.code
@@ -26,8 +27,27 @@ RING_OF_DESTRUCTION = 0x138D
 
 HEAVY_STORM = 0x131B
 MYSTICAL_SPACE_TYPHOON = 0x132D
+MIRROR_FORCE = 0x1317
+TORRENTIAL_TRIBUTE = 0x13FA
+DARK_HOLE = 0x10F6
 MAX_MAIN_DECK_SIZE = 60
 YDC_HEADER_SIZE = 8
+
+PLAYER_START_DECK_FILES = {
+    # The player's opening decks; do not apply CPU deck power-card injections here.
+    "rpg001_0_syoki.ydc",
+    "rpg002_0_rd.ydc",
+}
+
+CPU_DECK_NAME_PATTERN = re.compile(r"(?:rpg|wcs|wrd)\d{3}")
+TRUNCATED_RPG_DECK_NAME_PATTERN = re.compile(r"pg\d{3}")
+
+CPU_DECK_REQUIRED_CARDS = (
+    ("Mirror Force", MIRROR_FORCE),
+    ("Torrential Tribute", TORRENTIAL_TRIBUTE),
+    ("Dark Hole", DARK_HOLE),
+    ("Ring of Destruction", RING_OF_DESTRUCTION),
+)
 
 CYBER_STEIN_HALF_LP_COST_HOOK = 0x021E4A20
 CYBER_STEIN_HALF_LP_COST_CAVE = 0x0226CBBC
@@ -723,7 +743,10 @@ def patch_arm9_overlay_bytes(rom: ndspy.rom.NintendoDSRom) -> None:
     rom.arm9OverlayTable = ndspy.code.saveOverlayTable(overlays)
 
 
-def patch_cpu_deck_heavy_storm(deck_data: bytearray, deck_name: str) -> None:
+def patch_cpu_deck_cards(deck_data: bytearray, deck_name: str) -> None:
+    if not is_cpu_deck_file(deck_name):
+        return
+
     main_count_offset = YDC_HEADER_SIZE
     main_count = read_u16(deck_data, main_count_offset, deck_name, "main deck count")
     main_start = main_count_offset + 2
@@ -734,24 +757,48 @@ def patch_cpu_deck_heavy_storm(deck_data: bytearray, deck_name: str) -> None:
         read_u16(deck_data, main_start + (i * 2), deck_name, f"main deck card {i}")
         for i in range(main_count)
     ]
-    if HEAVY_STORM in main_cards:
-        return
 
-    mystical_space_typhoons = [
-        index
-        for index, card in enumerate(main_cards)
-        if card == MYSTICAL_SPACE_TYPHOON
-    ]
-    if len(mystical_space_typhoons) >= 2:
-        replacement_offset = main_start + (mystical_space_typhoons[-1] * 2)
-        deck_data[replacement_offset : replacement_offset + 2] = HEAVY_STORM.to_bytes(2, "little")
-        return
+    def append_main_deck_card(card_name: str, card_code: int) -> None:
+        nonlocal main_count, main_end
+        if main_count >= MAX_MAIN_DECK_SIZE:
+            raise ValueError(
+                f"{deck_name} cannot add {card_name} because its main deck already has {main_count} cards."
+            )
 
-    if main_count >= MAX_MAIN_DECK_SIZE:
-        raise ValueError(f"{deck_name} cannot add Heavy Storm because its main deck already has {main_count} cards.")
+        deck_data[main_count_offset : main_count_offset + 2] = (main_count + 1).to_bytes(2, "little")
+        deck_data[main_end:main_end] = card_code.to_bytes(2, "little")
+        main_cards.append(card_code)
+        main_count += 1
+        main_end += 2
 
-    deck_data[main_count_offset : main_count_offset + 2] = (main_count + 1).to_bytes(2, "little")
-    deck_data[main_end:main_end] = HEAVY_STORM.to_bytes(2, "little")
+    if HEAVY_STORM not in main_cards:
+        mystical_space_typhoons = [
+            index
+            for index, card in enumerate(main_cards)
+            if card == MYSTICAL_SPACE_TYPHOON
+        ]
+        if len(mystical_space_typhoons) >= 2:
+            replacement_index = mystical_space_typhoons[-1]
+            replacement_offset = main_start + (replacement_index * 2)
+            deck_data[replacement_offset : replacement_offset + 2] = HEAVY_STORM.to_bytes(2, "little")
+            main_cards[replacement_index] = HEAVY_STORM
+        else:
+            append_main_deck_card("Heavy Storm", HEAVY_STORM)
+
+    for card_name, card_code in CPU_DECK_REQUIRED_CARDS:
+        if card_code not in main_cards:
+            append_main_deck_card(card_name, card_code)
+
+
+def is_cpu_deck_file(deck_name: str) -> bool:
+    normalized = deck_name.casefold()
+    if normalized in PLAYER_START_DECK_FILES:
+        return False
+
+    return bool(
+        CPU_DECK_NAME_PATTERN.search(normalized)
+        or TRUNCATED_RPG_DECK_NAME_PATTERN.match(normalized)
+    )
 
 
 def validate_ydc_sections(deck_data: bytearray, deck_name: str) -> None:
@@ -786,7 +833,7 @@ def main() -> None:
     patch_nested_file(rom, 50, LIMIT_FILE, patch_limit_201009)
     patch_nested_file(rom, 51, "card_desc_e.bin", patch_card_desc_e)
     patch_nested_file(rom, 51, "card_prop.bin", patch_card_prop)
-    patched_decks = patch_nested_files(rom, DECK_PAC_ROM_FILE_ID, patch_cpu_deck_heavy_storm)
+    patched_decks = patch_nested_files(rom, DECK_PAC_ROM_FILE_ID, patch_cpu_deck_cards)
     patch_nested_file(rom, 51, "game_text_e.bin", patch_list_name)
     patch_nested_file(rom, 95, "system_txt_e.bin", patch_list_name)
 

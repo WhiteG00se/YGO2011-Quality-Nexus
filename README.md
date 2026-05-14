@@ -24,6 +24,7 @@ I recommend [xdelta-wasm](https://kotcrab.github.io/xdelta-wasm) for patching in
   - The deck editor treats owned cards as exactly 3 copies, while cards at 0 copies stay unobtained.
   - Bots play with `List - September, 2010`, but with the following changes:
     - if there are 2 or more Mystical Space Typhoons, change one of them to Heavy Storm, else add Heavy Storm to the deck
+    - add Mirror Force, Torrential Tribute, Dark Hole, and Ring of Destruction when missing
 
 <details>
 <summary>Quality List - 2010 limits and erratas</summary>
