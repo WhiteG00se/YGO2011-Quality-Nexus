@@ -25,7 +25,6 @@ Patch chain:
 - `scripts\apply-quality-patch.py`: modifies the Revival ROM into the Quality ROM.
 - `scripts\create-xdelta-as-diff.ps1`: builds the Quality ROM, recreates `Quality_Patch.xdelta`, and validates it.
 - `scripts\validate-xdelta.ps1`: verifies `Quality_Patch.xdelta` against the generated Quality ROM.
-- `_build-Quality-Nexus.ps1`: root-level wrapper for the full normal build workflow.
 
 ## Requirements
 
@@ -50,23 +49,17 @@ These are intentionally not committed:
 
 Do not edit `toDos.txt` or `working_on_instant_win.txt` unless the user explicitly asks for those files.
 
-## Build and validation
+## Development workflow for builds, releases and validation
 
-Use this from the repo root for the full workflow:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\_build-Quality-Nexus.ps1 -NoPause
-```
-
-The wrapper runs the Revival build, Quality build, xdelta creation, xdelta validation, and final hash reporting. Omit `-NoPause` when launching from Explorer or when a visible pause at the end is useful.
-
-Individual steps:
+Run the full workflow from the repo root by invoking the three scripts in order.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\apply-revival-patch.ps1
 powershell -ExecutionPolicy Bypass -File .\scripts\create-xdelta-as-diff.ps1
 powershell -ExecutionPolicy Bypass -File .\scripts\validate-xdelta.ps1
 ```
+
+The scripts apply the Nexus Revival patch, build this repo's Quality ROM, recreate `Quality_Patch.xdelta`, validate the patch output, and print SHA256 hashes for the important files.
 
 ## Sources
 

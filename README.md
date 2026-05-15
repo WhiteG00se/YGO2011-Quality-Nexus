@@ -189,17 +189,7 @@ Sorted by (ascending) Comment, Sep 2010, Quality List, Cardname.
 
 For local development, put `xdelta3.exe` at `tools\bin\xdelta3.exe`, create the Python virtual environment at `.venv`, and install `requirements.txt`.
 
-You can run `_build-Quality-Nexus.ps1` from Explorer if your Windows setup runs `.ps1` files from double-click. The script pauses by default so the output stays visible.
-
-For terminal or automation use:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\_build-Quality-Nexus.ps1 -NoPause
-```
-
-The build script applies the Nexus Revival patch, builds this repo's Quality ROM, recreates `Quality_Patch.xdelta`, validates the patch output, and prints SHA256 hashes for the important files.
-
-You can also run the individual steps:
+Run the build by invoking the three scripts in order from the repo root.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\apply-revival-patch.ps1
@@ -207,4 +197,6 @@ powershell -ExecutionPolicy Bypass -File .\scripts\create-xdelta-as-diff.ps1
 powershell -ExecutionPolicy Bypass -File .\scripts\validate-xdelta.ps1
 ```
 
-Project guidance for future coding agents is in `AGENTS.md`.
+The scripts apply the Nexus Revival patch, build this repo's Quality ROM, recreate `Quality_Patch.xdelta`, validate the patch output, and print SHA256 hashes for the important files.
+
+Project guidance and technical details can be found in `AGENTS.md`.
