@@ -38,7 +38,7 @@ Sorted by (ascending) Comment, Sep 2010, Quality List, Cardname.
 | [Magical Scientist](https://yugipedia.com/wiki/Magical_Scientist) | 0 | 1 | ~~Once per turn~~ (disabled, bugfix outstanding). |
 | [Premature Burial](https://yugipedia.com/wiki/Premature_Burial) | 0 | 1 | ~~Brionac was changed to once per turn~~ (disabled, bugfix outstanding). |
 | [Ring of Destruction](https://yugipedia.com/wiki/Ring_of_Destruction) | 0 | 1 | ~~Opponent gains LP equal to the monster's ATK; you take damage~~ (disabled, bugfix outstanding). |
-| [Makyura the Destructor](https://yugipedia.com/wiki/Makyura_the_Destructor) | 0 | 3 | ~~ATK/DEF => 1900~~ (disabled, bugfix outstanding). |
+| [Makyura the Destructor](https://yugipedia.com/wiki/Makyura_the_Destructor) | 0 | 3 | ATK/DEF => 1900 |
 | [Brionac, Dragon of the Ice Barrier](https://yugipedia.com/wiki/Brionac%2C_Dragon_of_the_Ice_Barrier) | 1 | 1 | ~~Once per turn~~ (disabled, bugfix outstanding). |
 | [Reinforcement of the Army](https://yugipedia.com/wiki/Reinforcement_of_the_Army) | 1 | 2 | E - Emergency Call 3 => 0<br>Shien's Smoke Signal 3 => 0 |
 | [Mind Master](https://yugipedia.com/wiki/Mind_Master) | 1 | 3 | ~~Once per turn~~ (disabled, bugfix outstanding). |

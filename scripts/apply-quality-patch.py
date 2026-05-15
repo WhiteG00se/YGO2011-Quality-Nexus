@@ -855,7 +855,7 @@ def main() -> None:
     # patch_nested_file(rom, 51, "card_desc_e.bin", patch_ring_of_destruction_desc)
     # patch_nested_file(rom, 51, "card_desc_e.bin", patch_cyber_stein_desc)
     # patch_nested_file(rom, 51, "card_desc_e.bin", patch_opt_card_descs)
-    # patch_nested_file(rom, 51, "card_prop.bin", patch_card_prop)
+    patch_nested_file(rom, 51, "card_prop.bin", patch_card_prop)
     patch_arm9_overlay_bytes(rom, {8: ARM9_OVERLAY_PATCHES[8]})
     patched_decks = patch_nested_files(rom, DECK_PAC_ROM_FILE_ID, patch_cpu_deck_cards)
     patch_nested_file(rom, 51, "game_text_e.bin", patch_list_name)
