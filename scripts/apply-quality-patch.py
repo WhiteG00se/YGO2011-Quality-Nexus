@@ -17,6 +17,22 @@ NEW_LIST_NAME = b"Quality List - 2010"
 LIMIT_FILE = "limit201009.bin"
 DECK_PAC_ROM_FILE_ID = 61
 
+
+POLYMERIZATION_PATCH_ADDRESSES = {
+    0x022336E4,  # POLYMERIZATION_FUSION_SUMMON_HOOK
+    0x022944FC,  # POLYMERIZATION_DRAW_AFTER_FUSION_CAVE (appended to overlay 3)
+}
+
+RING_OF_DESTRUCTION_PATCH_ADDRESSES = {
+    0x02210662,  # Ring of Destruction: damage opponent -> heal opponent
+}
+
+CYBER_STEIN_NON_OPT_PATCH_ADDRESSES = {
+    0x021E4A20,  # CYBER_STEIN_HALF_LP_COST_HOOK
+    0x022944E0,  # CYBER_STEIN_HALF_LP_COST_CAVE (appended to overlay 3)
+    0x0220B0B6,  # CYBER_STEIN_SUMMON_POSITION_PATCH
+}
+
 MAKYURA_THE_DESTRUCTOR = 0x14A5
 CYBER_STEIN = 0x114A
 MAGICAL_SCIENTIST = 0x1619
@@ -54,35 +70,36 @@ CPU_DECK_REQUIRED_CARDS = (
 )
 
 CYBER_STEIN_HALF_LP_COST_HOOK = 0x021E4A20
-CYBER_STEIN_HALF_LP_COST_CAVE = 0x0226CBBC
+CYBER_STEIN_HALF_LP_COST_CAVE = 0x022944E0
 CYBER_STEIN_SUMMON_POSITION_PATCH = 0x0220B0B6
-CYBER_STEIN_OPT_MARK_SUMMON_HOOK = 0x0220B0A0
-CYBER_STEIN_OPT_MARK_SUMMON_CAVE = 0x02294180
-MAGICAL_SCIENTIST_OPT_MARK_SUMMON_HOOK = 0x02213226
-MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE = 0x0229419A
-CYBER_SCIENTIST_OPT_CHECK_CAVE = 0x0226CB96
-MIND_BRIONAC_OPT_CHECK_CAVE = 0x0226C8A6
-MIND_BRIONAC_OPT_MARK_RESOLVE_CAVE = 0x0226C924
 POLYMERIZATION_FUSION_SUMMON_HOOK = 0x022336E4
-POLYMERIZATION_DRAW_AFTER_FUSION_CAVE = 0x0226C954
+POLYMERIZATION_DRAW_AFTER_FUSION_CAVE = 0x022944FC
+# OPT caves disabled — bugfix outstanding (old addresses were in data tables, not free space)
+# CYBER_STEIN_OPT_MARK_SUMMON_HOOK = 0x0220B0A0
+# CYBER_STEIN_OPT_MARK_SUMMON_CAVE = 0x02294180  # was in a data table region
+# MAGICAL_SCIENTIST_OPT_MARK_SUMMON_HOOK = 0x02213226
+# MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE = 0x0229419A  # was in a data table region
+# CYBER_SCIENTIST_OPT_CHECK_CAVE = 0x0226CB96
+# MIND_BRIONAC_OPT_CHECK_CAVE = 0x0226C8A6
+# MIND_BRIONAC_OPT_MARK_RESOLVE_CAVE = 0x0226C924
 DECK_EDITOR_NORMALIZE_CARD_COUNT_CAVE = 0x02172FE8
 CARD_COUNT_GETTER = 0x0202AFF8
 DRAW_CARDS = 0x021D13EC
 FUSION_SPECIAL_SUMMON = 0x0226940C
 
-CYBER_STEIN_EFFECT_CHECK_POINTER = 0x0227A2F8
-CYBER_STEIN_EFFECT_RESOLVE_POINTER = 0x0227A2FC
-MAGICAL_SCIENTIST_EFFECT_CHECK_POINTER = 0x0227AB38
-BRIONAC_EFFECT_CHECK_POINTER = 0x0227C248
-BRIONAC_EFFECT_RESOLVE_POINTER = 0x0227C24C
-MIND_MASTER_EFFECT_CHECK_POINTER = 0x0227C530
-MIND_MASTER_EFFECT_RESOLVE_POINTER = 0x0227C534
-
-COMMON_FUSION_SUMMON_EFFECT_CHECK = 0x021F04AD
-BRIONAC_EFFECT_CHECK = 0x021F03DD
-BRIONAC_EFFECT_RESOLVE = 0x021EB5B9
-MIND_MASTER_EFFECT_CHECK = 0x021F7A71
-MIND_MASTER_EFFECT_RESOLVE = 0x021EB851
+# OPT effect check pointers disabled — bugfix outstanding
+# CYBER_STEIN_EFFECT_CHECK_POINTER = 0x0227A2F8
+# CYBER_STEIN_EFFECT_RESOLVE_POINTER = 0x0227A2FC
+# MAGICAL_SCIENTIST_EFFECT_CHECK_POINTER = 0x0227AB38
+# BRIONAC_EFFECT_CHECK_POINTER = 0x0227C248
+# BRIONAC_EFFECT_RESOLVE_POINTER = 0x0227C24C
+# MIND_MASTER_EFFECT_CHECK_POINTER = 0x0227C530
+# MIND_MASTER_EFFECT_RESOLVE_POINTER = 0x0227C534
+# COMMON_FUSION_SUMMON_EFFECT_CHECK = 0x021F04AD
+# BRIONAC_EFFECT_CHECK = 0x021F03DD
+# BRIONAC_EFFECT_RESOLVE = 0x021EB5B9
+# MIND_MASTER_EFFECT_CHECK = 0x021F7A71
+# MIND_MASTER_EFFECT_RESOLVE = 0x021EB851
 
 CYBER_STEIN_OLD_DESCRIPTION = (
     b"Pay 5000 Life Points. Special Summon 1 Fusion Monster from your Extra Deck to the field in Attack Position."
@@ -90,6 +107,9 @@ CYBER_STEIN_OLD_DESCRIPTION = (
 CYBER_STEIN_NEW_DESCRIPTION = (
     b"Once per turn: Pay half your LP. Special Summon 1 Fusion Monster from Extra Deck in open Defense Position. "
 )
+CYBER_STEIN_NO_OPT_DESCRIPTION = (
+    b"Pay half your LP. Special Summon 1 Fusion Monster from your Extra Deck to the field in Defense Position."
+).ljust(len(CYBER_STEIN_OLD_DESCRIPTION), b" ")
 
 MAGICAL_SCIENTIST_OLD_DESCRIPTION = (
     b"Pay 1000 Life Points to Special Summon 1 level 6 or lower Fusion Monster from your Extra Deck in face-up "
@@ -182,44 +202,12 @@ CYBER_STEIN_HALF_LP_COST_CAVE_BYTES = bytes.fromhex(
     """
 )
 
-CYBER_SCIENTIST_OPT_CHECK_CAVE_BYTES = bytes.fromhex(
-    """
-    16 b4 04 1c 21 8b 05 4a 52 6b 01 32 91 42 02 d1
-    00 20 16 bc 70 47 02 4b 20 1c 16 bc 18 47 7c ac
-    29 02 ad 04 1f 02
-    """
-)
-
-MIND_BRIONAC_OPT_CHECK_CAVE_BYTES = bytes.fromhex(
-    """
-    16 b4 04 1c 21 8b 09 4a 52 6b 01 32 91 42 02 d1
-    00 20 16 bc 70 47 20 88 05 4b 98 42 01 d0 05 4b
-    00 e0 05 4b 20 1c 16 bc 18 47 00 00 7c ac 29 02
-    22 1e 00 00 dd 03 1f 02 71 7a 1f 02
-    """
-)
-
-MIND_BRIONAC_OPT_MARK_RESOLVE_CAVE_BYTES = bytes.fromhex(
-    """
-    16 b4 04 1c 06 49 49 6b 01 31 21 83 20 88 05 4b
-    98 42 01 d0 04 4b 00 e0 04 4b 20 1c 16 bc 18 47
-    7c ac 29 02 22 1e 00 00 b9 b5 1e 02 51 b8 1e 02
-    """
-)
-
-CYBER_STEIN_OPT_MARK_SUMMON_CAVE_BYTES = bytes.fromhex(
-    """
-    06 b4 03 49 49 6b 01 31 21 83 06 bc 25 88 01 48
-    70 47 7c ac 29 02 42 0e 00 00
-    """
-)
-
-MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE_BYTES = bytes.fromhex(
-    """
-    06 b4 03 49 49 6b 01 31 21 83 06 bc 21 88 01 48
-    70 47 7c ac 29 02 81 14 00 00
-    """
-)
+# OPT cave code disabled — bugfix outstanding
+# CYBER_SCIENTIST_OPT_CHECK_CAVE_BYTES = bytes.fromhex(...)
+# MIND_BRIONAC_OPT_CHECK_CAVE_BYTES = bytes.fromhex(...)
+# MIND_BRIONAC_OPT_MARK_RESOLVE_CAVE_BYTES = bytes.fromhex(...)
+# CYBER_STEIN_OPT_MARK_SUMMON_CAVE_BYTES = bytes.fromhex(...)
+# MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE_BYTES = bytes.fromhex(...)
 
 POLYMERIZATION_DRAW_AFTER_FUSION_CAVE_BYTES = (
     bytes.fromhex("10 b5")
@@ -271,103 +259,37 @@ ARM9_OVERLAY_PATCHES = {
             DECK_EDITOR_NORMALIZE_CARD_COUNT_CAVE_BYTES,
         ),
     ],
-    3: [
-        (
-            0x02210662,
-            bytes.fromhex("bf f7 2d fb"),  # bl 0x021CFCC0: damage opponent
-            bytes.fromhex("c0 f7 8d f9"),  # bl 0x021D0980: heal opponent
-        ),
-        (
-            CYBER_STEIN_HALF_LP_COST_HOOK,
-            bytes.fromhex("28 88 89 49"),  # ldrh r0, [r5]; ldr r1, =0x0226F2A0
-            thumb_bl(CYBER_STEIN_HALF_LP_COST_HOOK, CYBER_STEIN_HALF_LP_COST_CAVE),
-        ),
-        (
-            CYBER_STEIN_OPT_MARK_SUMMON_HOOK,
-            bytes.fromhex("25 88 1c 48"),  # ldrh r5, [r4]; ldr r0, =0x00000E42
-            thumb_bl(CYBER_STEIN_OPT_MARK_SUMMON_HOOK, CYBER_STEIN_OPT_MARK_SUMMON_CAVE),
-        ),
-        (
-            CYBER_STEIN_SUMMON_POSITION_PATCH,
-            bytes.fromhex("00 26"),  # movs r6, #0: Attack Position
-            bytes.fromhex("01 26"),  # movs r6, #1: face-up Defense Position
-        ),
-        (
-            MAGICAL_SCIENTIST_OPT_MARK_SUMMON_HOOK,
-            bytes.fromhex("21 88 0f 48"),  # ldrh r1, [r4]; ldr r0, =0x00001481
-            thumb_bl(MAGICAL_SCIENTIST_OPT_MARK_SUMMON_HOOK, MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE),
-        ),
-        (
-            POLYMERIZATION_FUSION_SUMMON_HOOK,
-            thumb_bl(POLYMERIZATION_FUSION_SUMMON_HOOK, FUSION_SPECIAL_SUMMON),
-            thumb_bl(POLYMERIZATION_FUSION_SUMMON_HOOK, POLYMERIZATION_DRAW_AFTER_FUSION_CAVE),
-        ),
-        (
-            CYBER_STEIN_EFFECT_CHECK_POINTER,
-            COMMON_FUSION_SUMMON_EFFECT_CHECK.to_bytes(4, "little"),
-            (CYBER_SCIENTIST_OPT_CHECK_CAVE | 1).to_bytes(4, "little"),
-        ),
-        (
-            MAGICAL_SCIENTIST_EFFECT_CHECK_POINTER,
-            COMMON_FUSION_SUMMON_EFFECT_CHECK.to_bytes(4, "little"),
-            (CYBER_SCIENTIST_OPT_CHECK_CAVE | 1).to_bytes(4, "little"),
-        ),
-        (
-            BRIONAC_EFFECT_CHECK_POINTER,
-            BRIONAC_EFFECT_CHECK.to_bytes(4, "little"),
-            (MIND_BRIONAC_OPT_CHECK_CAVE | 1).to_bytes(4, "little"),
-        ),
-        (
-            BRIONAC_EFFECT_RESOLVE_POINTER,
-            BRIONAC_EFFECT_RESOLVE.to_bytes(4, "little"),
-            (MIND_BRIONAC_OPT_MARK_RESOLVE_CAVE | 1).to_bytes(4, "little"),
-        ),
-        (
-            MIND_MASTER_EFFECT_CHECK_POINTER,
-            MIND_MASTER_EFFECT_CHECK.to_bytes(4, "little"),
-            (MIND_BRIONAC_OPT_CHECK_CAVE | 1).to_bytes(4, "little"),
-        ),
-        (
-            MIND_MASTER_EFFECT_RESOLVE_POINTER,
-            MIND_MASTER_EFFECT_RESOLVE.to_bytes(4, "little"),
-            (MIND_BRIONAC_OPT_MARK_RESOLVE_CAVE | 1).to_bytes(4, "little"),
-        ),
-        (
-            CYBER_SCIENTIST_OPT_CHECK_CAVE,
-            bytes(len(CYBER_SCIENTIST_OPT_CHECK_CAVE_BYTES)),
-            CYBER_SCIENTIST_OPT_CHECK_CAVE_BYTES,
-        ),
-        (
-            CYBER_STEIN_HALF_LP_COST_CAVE,
-            bytes(len(CYBER_STEIN_HALF_LP_COST_CAVE_BYTES)),
-            CYBER_STEIN_HALF_LP_COST_CAVE_BYTES,
-        ),
-        (
-            MIND_BRIONAC_OPT_CHECK_CAVE,
-            bytes(len(MIND_BRIONAC_OPT_CHECK_CAVE_BYTES)),
-            MIND_BRIONAC_OPT_CHECK_CAVE_BYTES,
-        ),
-        (
-            MIND_BRIONAC_OPT_MARK_RESOLVE_CAVE,
-            bytes(len(MIND_BRIONAC_OPT_MARK_RESOLVE_CAVE_BYTES)),
-            MIND_BRIONAC_OPT_MARK_RESOLVE_CAVE_BYTES,
-        ),
-        (
-            CYBER_STEIN_OPT_MARK_SUMMON_CAVE,
-            bytes(len(CYBER_STEIN_OPT_MARK_SUMMON_CAVE_BYTES)),
-            CYBER_STEIN_OPT_MARK_SUMMON_CAVE_BYTES,
-        ),
-        (
-            MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE,
-            bytes(len(MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE_BYTES)),
-            MAGICAL_SCIENTIST_OPT_MARK_SUMMON_CAVE_BYTES,
-        ),
-        (
-            POLYMERIZATION_DRAW_AFTER_FUSION_CAVE,
-            bytes(len(POLYMERIZATION_DRAW_AFTER_FUSION_CAVE_BYTES)),
-            POLYMERIZATION_DRAW_AFTER_FUSION_CAVE_BYTES,
-        ),
-    ],
+    # All overlay 3 errata disabled — bugfix outstanding for code cave placement
+    # (
+    #     0x02210662,
+    #     bytes.fromhex("bf f7 2d fb"),  # Ring of Destruction: damage -> heal opponent
+    #     bytes.fromhex("c0 f7 8d f9"),
+    # ),
+    # (
+    #     CYBER_STEIN_HALF_LP_COST_HOOK,
+    #     bytes.fromhex("28 88 89 49"),  # Cyber-Stein half LP cost hook
+    #     thumb_bl(CYBER_STEIN_HALF_LP_COST_HOOK, CYBER_STEIN_HALF_LP_COST_CAVE),
+    # ),
+    # (
+    #     CYBER_STEIN_SUMMON_POSITION_PATCH,
+    #     bytes.fromhex("00 26"),  # Cyber-Stein: Attack -> Defense Position
+    #     bytes.fromhex("01 26"),
+    # ),
+    # (
+    #     POLYMERIZATION_FUSION_SUMMON_HOOK,
+    #     thumb_bl(POLYMERIZATION_FUSION_SUMMON_HOOK, FUSION_SPECIAL_SUMMON),
+    #     thumb_bl(POLYMERIZATION_FUSION_SUMMON_HOOK, POLYMERIZATION_DRAW_AFTER_FUSION_CAVE),
+    # ),
+    # (
+    #     CYBER_STEIN_HALF_LP_COST_CAVE,
+    #     bytes(len(CYBER_STEIN_HALF_LP_COST_CAVE_BYTES)),
+    #     CYBER_STEIN_HALF_LP_COST_CAVE_BYTES,
+    # ),
+    # (
+    #     POLYMERIZATION_DRAW_AFTER_FUSION_CAVE,
+    #     bytes(len(POLYMERIZATION_DRAW_AFTER_FUSION_CAVE_BYTES)),
+    #     POLYMERIZATION_DRAW_AFTER_FUSION_CAVE_BYTES,
+    # ),
 }
 
 FORBIDDEN = 0x0000
@@ -698,19 +620,61 @@ def replace_unique(data: bytearray, old_value: bytes, new_value: bytes, label: s
     data[position : position + len(old_value)] = new_value
 
 
-def patch_card_desc_e(desc_data: bytearray) -> None:
-    replace_unique(
-        desc_data,
-        RING_OF_DESTRUCTION_OLD_DESCRIPTION,
-        RING_OF_DESTRUCTION_NEW_DESCRIPTION,
-        "Ring of Destruction English description",
-    )
+def patch_polymerization_desc(desc_data: bytearray) -> None:
     replace_unique(
         desc_data,
         POLYMERIZATION_OLD_DESCRIPTION,
         POLYMERIZATION_NEW_DESCRIPTION,
         "Polymerization English description",
     )
+
+
+def patch_opt_card_descs(desc_data: bytearray) -> None:
+    replace_unique(
+        desc_data,
+        CYBER_STEIN_OLD_DESCRIPTION,
+        CYBER_STEIN_NEW_DESCRIPTION,
+        "Cyber-Stein English description",
+    )
+    replace_unique(
+        desc_data,
+        MAGICAL_SCIENTIST_OLD_DESCRIPTION,
+        MAGICAL_SCIENTIST_NEW_DESCRIPTION,
+        "Magical Scientist English description",
+    )
+    replace_unique(
+        desc_data,
+        MIND_MASTER_OLD_DESCRIPTION,
+        MIND_MASTER_NEW_DESCRIPTION,
+        "Mind Master English description",
+    )
+    replace_unique(
+        desc_data,
+        BRIONAC_OLD_DESCRIPTION,
+        BRIONAC_NEW_DESCRIPTION,
+        "Brionac, Dragon of the Ice Barrier English description",
+    )
+
+
+def patch_cyber_stein_desc(desc_data: bytearray) -> None:
+    replace_unique(
+        desc_data,
+        CYBER_STEIN_OLD_DESCRIPTION,
+        CYBER_STEIN_NO_OPT_DESCRIPTION,
+        "Cyber-Stein English description",
+    )
+
+
+def patch_ring_of_destruction_desc(desc_data: bytearray) -> None:
+    replace_unique(
+        desc_data,
+        RING_OF_DESTRUCTION_OLD_DESCRIPTION,
+        RING_OF_DESTRUCTION_NEW_DESCRIPTION,
+        "Ring of Destruction English description",
+    )
+
+
+def patch_card_desc_e(desc_data: bytearray) -> None:
     replace_unique(
         desc_data,
         CYBER_STEIN_OLD_DESCRIPTION,
@@ -764,10 +728,19 @@ def patch_card_prop(card_prop_data: bytearray) -> None:
         card_prop_data[offset + 3] = defense_byte
 
 
-def patch_arm9_overlay_bytes(rom: ndspy.rom.NintendoDSRom) -> None:
+def extend_overlay(rom: ndspy.rom.NintendoDSRom, overlay_id: int, extra_bytes: int) -> None:
+    overlays = rom.loadArm9Overlays()
+    ov = overlays[overlay_id]
+    ov.data = bytearray(ov.data) + bytearray(extra_bytes)
+    ov.ramSize = len(ov.data)
+    rom.files[ov.fileID] = ov.save(compress=ov.compressed)
+    rom.arm9OverlayTable = ndspy.code.saveOverlayTable(overlays)
+
+
+def patch_arm9_overlay_bytes(rom: ndspy.rom.NintendoDSRom, overlay_patches: dict) -> None:
     overlays = rom.loadArm9Overlays()
 
-    for overlay_id, patches in ARM9_OVERLAY_PATCHES.items():
+    for overlay_id, patches in overlay_patches.items():
         overlay = overlays[overlay_id]
         for ram_address, expected, replacement in patches:
             offset = ram_address - overlay.ramAddress
@@ -872,10 +845,18 @@ def main() -> None:
         raise FileNotFoundError(f"Missing source ROM: {SOURCE_ROM}")
 
     rom = ndspy.rom.NintendoDSRom.fromFile(str(SOURCE_ROM))
-    patch_arm9_overlay_bytes(rom)
     patch_nested_file(rom, 50, LIMIT_FILE, patch_limit_201009)
-    patch_nested_file(rom, 51, "card_desc_e.bin", patch_card_desc_e)
-    patch_nested_file(rom, 51, "card_prop.bin", patch_card_prop)
+
+    # All errata disabled — bugfix outstanding for code cave placement
+    # cave_size = len(CYBER_STEIN_HALF_LP_COST_CAVE_BYTES) + len(POLYMERIZATION_DRAW_AFTER_FUSION_CAVE_BYTES)
+    # extend_overlay(rom, 3, cave_size)
+    # patch_arm9_overlay_bytes(rom, {3: ARM9_OVERLAY_PATCHES[3]})
+    # patch_nested_file(rom, 51, "card_desc_e.bin", patch_polymerization_desc)
+    # patch_nested_file(rom, 51, "card_desc_e.bin", patch_ring_of_destruction_desc)
+    # patch_nested_file(rom, 51, "card_desc_e.bin", patch_cyber_stein_desc)
+    # patch_nested_file(rom, 51, "card_desc_e.bin", patch_opt_card_descs)
+    # patch_nested_file(rom, 51, "card_prop.bin", patch_card_prop)
+    patch_arm9_overlay_bytes(rom, {8: ARM9_OVERLAY_PATCHES[8]})
     patched_decks = patch_nested_files(rom, DECK_PAC_ROM_FILE_ID, patch_cpu_deck_cards)
     patch_nested_file(rom, 51, "game_text_e.bin", patch_list_name)
     patch_nested_file(rom, 95, "system_txt_e.bin", patch_list_name)

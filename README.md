@@ -34,17 +34,17 @@ Sorted by (ascending) Comment, Sep 2010, Quality List, Cardname.
 
 | Cardname | Sep 2010 | Quality List | Comment |
 | --- | ---: | ---: | --- |
-| [Cyber-Stein](https://yugipedia.com/wiki/Cyber-Stein) | 0 | 1 | Once per turn; pays half your LP; summons in face-up Defense Position. |
-| [Magical Scientist](https://yugipedia.com/wiki/Magical_Scientist) | 0 | 1 | Once per turn. |
-| [Premature Burial](https://yugipedia.com/wiki/Premature_Burial) | 0 | 1 | Brionac was changed to once per turn. |
-| [Ring of Destruction](https://yugipedia.com/wiki/Ring_of_Destruction) | 0 | 1 | Opponent gains LP equal to the monster's ATK; you take damage. |
-| [Makyura the Destructor](https://yugipedia.com/wiki/Makyura_the_Destructor) | 0 | 3 | ATK/DEF => 1900. |
-| [Brionac, Dragon of the Ice Barrier](https://yugipedia.com/wiki/Brionac%2C_Dragon_of_the_Ice_Barrier) | 1 | 1 | Once per turn. |
+| [Cyber-Stein](https://yugipedia.com/wiki/Cyber-Stein) | 0 | 1 | ~~Pays half your LP; summons in face-up Defense Position; once per turn~~ (disabled, bugfix outstanding). |
+| [Magical Scientist](https://yugipedia.com/wiki/Magical_Scientist) | 0 | 1 | ~~Once per turn~~ (disabled, bugfix outstanding). |
+| [Premature Burial](https://yugipedia.com/wiki/Premature_Burial) | 0 | 1 | ~~Brionac was changed to once per turn~~ (disabled, bugfix outstanding). |
+| [Ring of Destruction](https://yugipedia.com/wiki/Ring_of_Destruction) | 0 | 1 | ~~Opponent gains LP equal to the monster's ATK; you take damage~~ (disabled, bugfix outstanding). |
+| [Makyura the Destructor](https://yugipedia.com/wiki/Makyura_the_Destructor) | 0 | 3 | ~~ATK/DEF => 1900~~ (disabled, bugfix outstanding). |
+| [Brionac, Dragon of the Ice Barrier](https://yugipedia.com/wiki/Brionac%2C_Dragon_of_the_Ice_Barrier) | 1 | 1 | ~~Once per turn~~ (disabled, bugfix outstanding). |
 | [Reinforcement of the Army](https://yugipedia.com/wiki/Reinforcement_of_the_Army) | 1 | 2 | E - Emergency Call 3 => 0<br>Shien's Smoke Signal 3 => 0 |
-| [Mind Master](https://yugipedia.com/wiki/Mind_Master) | 1 | 3 | Once per turn. |
+| [Mind Master](https://yugipedia.com/wiki/Mind_Master) | 1 | 3 | ~~Once per turn~~ (disabled, bugfix outstanding). |
 | [E - Emergency Call](https://yugipedia.com/wiki/E_-_Emergency_Call) | 3 | 0 | Reinforcement of the Army 1 => 2 |
 | [Shien's Smoke Signal](https://yugipedia.com/wiki/Shien%27s_Smoke_Signal) | 3 | 0 | Reinforcement of the Army 1 => 2 |
-| [Polymerization](https://yugipedia.com/wiki/Polymerization) | 3 | 3 | Draw 1 card if resolved successfully. |
+| [Polymerization](https://yugipedia.com/wiki/Polymerization) | 3 | 3 | ~~Draw 1 card if resolved successfully~~ (disabled, bugfix outstanding). |
 | [Black Luster Soldier - Envoy of the Beginning](https://yugipedia.com/wiki/Black_Luster_Soldier_-_Envoy_of_the_Beginning) | 0 | 0 |  |
 | [Brain Control](https://yugipedia.com/wiki/Brain_Control) | 0 | 0 |  |
 | [Butterfly Dagger - Elma](https://yugipedia.com/wiki/Butterfly_Dagger_-_Elma) | 0 | 0 |  |
