@@ -228,7 +228,8 @@ DECK_EDITOR_NORMALIZE_CARD_COUNT_CAVE_BYTES = (
 )
 
 CARD_STAT_CHANGES = [
-    ("Makyura the Destructor", MAKYURA_THE_DESTRUCTOR, 0x28, 0x3C, 0x2F, 0x5F),
+    # (card name, card code, expected ATK, expected DEF, new ATK, new DEF)
+    ("Makyura the Destructor", MAKYURA_THE_DESTRUCTOR, 1600, 1200, 1900, 1900),
 ]
 
 ARM9_OVERLAY_PATCHES = {
@@ -701,11 +702,25 @@ def patch_card_desc_e(desc_data: bytearray) -> None:
     )
 
 
+def encode_card_stats(name: str, atk: int, defense: int) -> tuple[int, int, int]:
+    # Returns (atk_byte, def_byte, atk_plus_20_flag).
+    # card_prop.bin stores ATK = atk_byte * 40 + (atk_plus_20_flag ? 20 : 0), and DEF = def_byte * 20.
+    # The +20 flag is bit 15 of the u16 at the start of each 8-byte row.
+    if atk < 0 or atk % 20 != 0 or atk // 40 > 0xFF:
+        raise ValueError(f"{name}: ATK {atk} must be a non-negative multiple of 20 within encoding range.")
+    if defense < 0 or defense % 20 != 0 or defense // 20 > 0xFF:
+        raise ValueError(f"{name}: DEF {defense} must be a non-negative multiple of 20 within encoding range.")
+    return atk // 40, defense // 20, 1 if (atk % 40) == 20 else 0
+
+
 def patch_card_prop(card_prop_data: bytearray) -> None:
     if len(card_prop_data) % 8 != 0:
         raise ValueError(f"Unexpected card_prop.bin size: {len(card_prop_data)} bytes.")
 
-    for name, code, expected_attack_byte, expected_defense_byte, attack_byte, defense_byte in CARD_STAT_CHANGES:
+    for name, code, expected_atk, expected_def, new_atk, new_def in CARD_STAT_CHANGES:
+        expected_atk_byte, expected_def_byte, expected_flag = encode_card_stats(name, expected_atk, expected_def)
+        new_atk_byte, new_def_byte, new_flag = encode_card_stats(name, new_atk, new_def)
+
         matches = []
         for offset in range(0, len(card_prop_data), 8):
             card_code = int.from_bytes(card_prop_data[offset : offset + 2], "little") & 0x3FFF
@@ -716,16 +731,22 @@ def patch_card_prop(card_prop_data: bytearray) -> None:
             raise ValueError(f"Expected one {name} card_prop.bin row, found {len(matches)}.")
 
         offset = matches[0]
-        actual_attack_byte = card_prop_data[offset + 2]
-        actual_defense_byte = card_prop_data[offset + 3]
-        if (actual_attack_byte, actual_defense_byte) != (expected_attack_byte, expected_defense_byte):
+        raw_code = int.from_bytes(card_prop_data[offset : offset + 2], "little")
+        actual_flag = (raw_code >> 15) & 1
+        actual_atk_byte = card_prop_data[offset + 2]
+        actual_def_byte = card_prop_data[offset + 3]
+        if (actual_atk_byte, actual_def_byte, actual_flag) != (expected_atk_byte, expected_def_byte, expected_flag):
             raise ValueError(
-                f"{name} expected stat bytes {expected_attack_byte:02X} {expected_defense_byte:02X} "
-                f"but found {actual_attack_byte:02X} {actual_defense_byte:02X}."
+                f"{name} expected ATK byte {expected_atk_byte:02X} +20-flag {expected_flag} "
+                f"DEF byte {expected_def_byte:02X} "
+                f"but found ATK byte {actual_atk_byte:02X} +20-flag {actual_flag} "
+                f"DEF byte {actual_def_byte:02X}."
             )
 
-        card_prop_data[offset + 2] = attack_byte
-        card_prop_data[offset + 3] = defense_byte
+        new_raw_code = (raw_code & ~0x8000) | (new_flag << 15)
+        card_prop_data[offset : offset + 2] = new_raw_code.to_bytes(2, "little")
+        card_prop_data[offset + 2] = new_atk_byte
+        card_prop_data[offset + 3] = new_def_byte
 
 
 def extend_overlay(rom: ndspy.rom.NintendoDSRom, overlay_id: int, extra_bytes: int) -> None:
