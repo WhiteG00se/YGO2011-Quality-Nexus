@@ -366,6 +366,7 @@ LIMIT_CHANGES = [
     ("Emergency Teleport", 0x1E43, SEMI_LIMITED),
     ("Sangan", 0x0FD6, SEMI_LIMITED),
     ("Return from the Different Dimension", 0x17BE, SEMI_LIMITED),
+    ("Call of the Haunted", 0x137D, SEMI_LIMITED),
     ("Chaos Sorcerer", 0x16C9, UNLIMITED),
     ("Left Arm of the Forbidden One", 0x0FBA, UNLIMITED),
     ("Left Leg of the Forbidden One", 0x0FB8, UNLIMITED),

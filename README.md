@@ -97,7 +97,6 @@ Sorted by (ascending) Comment, Sep 2010, Quality List, Cardname.
 | [Wall of Revealing Light](https://yugipedia.com/wiki/Wall_of_Revealing_Light) | 1 | 0 |  |
 | [Black Whirlwind](https://yugipedia.com/wiki/Black_Whirlwind) | 1 | 1 |  |
 | [Blackwing - Gale the Whirlwind](https://yugipedia.com/wiki/Blackwing_-_Gale_the_Whirlwind) | 1 | 1 |  |
-| [Call of the Haunted](https://yugipedia.com/wiki/Call_of_the_Haunted) | 1 | 1 |  |
 | [Card Destruction](https://yugipedia.com/wiki/Card_Destruction) | 1 | 1 |  |
 | [Ceasefire](https://yugipedia.com/wiki/Ceasefire) | 1 | 1 |  |
 | [Charge of the Light Brigade](https://yugipedia.com/wiki/Charge_of_the_Light_Brigade) | 1 | 1 |  |
@@ -126,6 +125,7 @@ Sorted by (ascending) Comment, Sep 2010, Quality List, Cardname.
 | [Trishula, Dragon of the Ice Barrier](https://yugipedia.com/wiki/Trishula%2C_Dragon_of_the_Ice_Barrier) | 1 | 1 |  |
 | [Advanced Ritual Art](https://yugipedia.com/wiki/Advanced_Ritual_Art) | 1 | 2 |  |
 | [Burial from a Different Dimension](https://yugipedia.com/wiki/Burial_from_a_Different_Dimension) | 1 | 2 |  |
+| [Call of the Haunted](https://yugipedia.com/wiki/Call_of_the_Haunted) | 1 | 2 |  |
 | [Card Trooper](https://yugipedia.com/wiki/Card_Trooper) | 1 | 2 |  |
 | [Emergency Teleport](https://yugipedia.com/wiki/Emergency_Teleport) | 1 | 2 |  |
 | [Foolish Burial](https://yugipedia.com/wiki/Foolish_Burial) | 1 | 2 |  |
