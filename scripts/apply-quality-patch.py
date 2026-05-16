@@ -86,6 +86,12 @@ DECK_EDITOR_NORMALIZE_CARD_COUNT_CAVE = 0x02172FE8
 CARD_COUNT_GETTER = 0x0202AFF8
 DRAW_CARDS = 0x021D13EC
 FUSION_SPECIAL_SUMMON = 0x0226940C
+INSTANT_WIN_DUEL_HELPER_MODE_PATCH = 0x021C4122
+INSTANT_WIN_HELPER_CASE = 0x1A
+INSTANT_WIN_HELPER = 0x0214BA78
+INSTANT_WIN_SET_LP = 0x021CF9EC
+DUEL_HELPER_ORIGINAL_CASE_0_CHECK = 0x0216B47C
+REG_KEYINPUT = 0x04000130
 
 # OPT effect check pointers disabled — bugfix outstanding
 # CYBER_STEIN_EFFECT_CHECK_POINTER = 0x0227A2F8
@@ -227,12 +233,63 @@ DECK_EDITOR_NORMALIZE_CARD_COUNT_CAVE_BYTES = (
     )
 )
 
+# Instant-win ARM helper-case layout:
+# - The duel update originally calls helper mode 0 before processing a frame.
+# - Mode 0x1A had no static callers found, so the duel update is redirected there.
+# - This instant-win mode polls KEYINPUT for active-low START+SELECT+L+R, calls the
+#   game's set-LP helper with side 1 / LP 0, then runs mode 0's original check.
+# This deliberately avoids the mid-overlay zero runs; those proved to be live data
+# when the duel-end / DP-reward flow reads them later.
+INSTANT_WIN_HELPER_BYTES = (
+    bytes.fromhex(
+        """
+        20 00 9f e5
+        b0 00 d0 e1
+        c3 0f 10 e3
+        02 00 00 1a
+        01 00 a0 e3
+        00 10 a0 e3
+        """
+    )
+    + arm_blx(INSTANT_WIN_HELPER + 24, INSTANT_WIN_SET_LP)
+    + bytes.fromhex("64 06 9f e5")
+    + arm_bl(INSTANT_WIN_HELPER + 32, DUEL_HELPER_ORIGINAL_CASE_0_CHECK)
+    + bytes.fromhex(
+        """
+        f8 8f bd e8
+        """
+    )
+    + REG_KEYINPUT.to_bytes(4, "little")
+    + bytes(8)
+)
+if len(INSTANT_WIN_HELPER_BYTES) != 52:
+    raise ValueError("Instant-win helper must stay within helper case 0x1A.")
+
 CARD_STAT_CHANGES = [
     # (card name, card code, expected ATK, expected DEF, new ATK, new DEF)
     ("Makyura the Destructor", MAKYURA_THE_DESTRUCTOR, 1600, 1200, 1900, 1900),
 ]
 
 ARM9_OVERLAY_PATCHES = {
+    3: [
+        (
+            INSTANT_WIN_DUEL_HELPER_MODE_PATCH,
+            bytes.fromhex("00 20"),  # movs r0, #0 before duel update helper call
+            bytes([INSTANT_WIN_HELPER_CASE, 0x20]),
+        ),
+        (
+            INSTANT_WIN_HELPER,
+            bytes.fromhex(
+                """
+                80 06 9f e5 7e 7e 00 eb 00 00 50 e3 03 00 00 1a
+                74 06 9f e5 26 0b 01 eb 0c 00 50 e3 00 00 00 1a
+                01 80 a0 e3 09 00 a0 e1 08 10 a0 e1 af fe ff eb
+                f8 8f bd e8
+                """
+            ),
+            INSTANT_WIN_HELPER_BYTES,
+        ),
+    ],
     8: [
         (
             0x021544A0,
@@ -878,6 +935,7 @@ def main() -> None:
     # patch_nested_file(rom, 51, "card_desc_e.bin", patch_cyber_stein_desc)
     # patch_nested_file(rom, 51, "card_desc_e.bin", patch_opt_card_descs)
     patch_nested_file(rom, 51, "card_prop.bin", patch_card_prop)
+    patch_arm9_overlay_bytes(rom, {3: ARM9_OVERLAY_PATCHES[3]})
     patch_arm9_overlay_bytes(rom, {8: ARM9_OVERLAY_PATCHES[8]})
     patched_decks = patch_nested_files(rom, DECK_PAC_ROM_FILE_ID, patch_cpu_deck_cards)
     patch_nested_file(rom, 51, "game_text_e.bin", patch_list_name)

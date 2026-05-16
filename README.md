@@ -22,6 +22,7 @@ I recommend [xdelta-wasm](https://kotcrab.github.io/xdelta-wasm) for patching in
   - `List - September, 2010` => `Quality List - 2010`
   - Minor errata for some cards (overview is in the table below)
   - The deck editor treats owned cards as exactly 3 copies, while cards at 0 copies stay unobtained.
+  - START + SELECT + L + R during a duel sets the opponent's LP to 0, intended to skip puzzles or emergency exit unlikely issues with errata'd cards.
   - Bots play with `List - September, 2010`, but with the following changes:
     - if there are 2 or more Mystical Space Typhoons, change one of them to Heavy Storm, else add Heavy Storm to the deck
     - add Mirror Force, Torrential Tribute, Dark Hole, and Ring of Destruction when missing
