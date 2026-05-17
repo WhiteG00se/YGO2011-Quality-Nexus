@@ -172,6 +172,7 @@ Sorted by (ascending) Comment, Sep 2010, Quality List, Cardname.
 | [Ultimate Offering](https://yugipedia.com/wiki/Ultimate_Offering) | 2 | 3 |  |
 | [Final Countdown](https://yugipedia.com/wiki/Final_Countdown) | 3 | 0 |  |
 | [Gateway of the Six](https://yugipedia.com/wiki/Gateway_of_the_Six) | 3 | 0 |  |
+| [Messenger of Peace](https://yugipedia.com/wiki/Messenger_of_Peace) | 3 | 0 |  |
 | [Symbol of Heritage](https://yugipedia.com/wiki/Symbol_of_Heritage) | 3 | 0 |  |
 | [Blackwing - Kalut the Moon Shadow](https://yugipedia.com/wiki/Blackwing_-_Kalut_the_Moon_Shadow) | 3 | 1 |  |
 | [Deck Devastation Virus](https://yugipedia.com/wiki/Deck_Devastation_Virus) | 3 | 1 |  |

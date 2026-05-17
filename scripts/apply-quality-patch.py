@@ -48,6 +48,7 @@ SHIENS_SMOKE_SIGNAL = 0x247B
 
 HEAVY_STORM = 0x131B
 MYSTICAL_SPACE_TYPHOON = 0x132D
+MESSENGER_OF_PEACE = 0x134A
 MIRROR_FORCE = 0x1317
 TORRENTIAL_TRIBUTE = 0x13FA
 DARK_HOLE = 0x10F6
@@ -383,6 +384,7 @@ LIMIT_CHANGES = [
     ("Level Limit - Area B", 0x17A6, FORBIDDEN),
     ("Final Countdown", 0x169C, FORBIDDEN),
     ("Gateway of the Six", 0x219A, FORBIDDEN),
+    ("Messenger of Peace", MESSENGER_OF_PEACE, FORBIDDEN),
     ("Shien's Smoke Signal", SHIENS_SMOKE_SIGNAL, FORBIDDEN),
     ("Trap Dustshoot", 0x1546, FORBIDDEN),
     ("Royal Tribute", 0x15A4, LIMITED),
