@@ -48,10 +48,12 @@ SHIENS_SMOKE_SIGNAL = 0x247B
 
 HEAVY_STORM = 0x131B
 MYSTICAL_SPACE_TYPHOON = 0x132D
+GIANT_TRUNADE = 0x132E
 MESSENGER_OF_PEACE = 0x134A
 MIRROR_FORCE = 0x1317
 TORRENTIAL_TRIBUTE = 0x13FA
 DARK_HOLE = 0x10F6
+SOLEMN_JUDGMENT = 0x12FD
 MAX_MAIN_DECK_SIZE = 60
 YDC_HEADER_SIZE = 8
 
@@ -879,19 +881,23 @@ def patch_cpu_deck_cards(deck_data: bytearray, deck_name: str) -> None:
         main_count += 1
         main_end += 2
 
+    def replace_main_deck_card(index: int, card_code: int) -> None:
+        replacement_offset = main_start + (index * 2)
+        deck_data[replacement_offset : replacement_offset + 2] = card_code.to_bytes(2, "little")
+        main_cards[index] = card_code
+
     if HEAVY_STORM not in main_cards:
-        mystical_space_typhoons = [
-            index
-            for index, card in enumerate(main_cards)
-            if card == MYSTICAL_SPACE_TYPHOON
-        ]
-        if len(mystical_space_typhoons) >= 2:
-            replacement_index = mystical_space_typhoons[-1]
-            replacement_offset = main_start + (replacement_index * 2)
-            deck_data[replacement_offset : replacement_offset + 2] = HEAVY_STORM.to_bytes(2, "little")
-            main_cards[replacement_index] = HEAVY_STORM
-        else:
-            append_main_deck_card("Heavy Storm", HEAVY_STORM)
+        giant_trunades = [index for index, card in enumerate(main_cards) if card == GIANT_TRUNADE]
+        mystical_space_typhoons = [index for index, card in enumerate(main_cards) if card == MYSTICAL_SPACE_TYPHOON]
+        if giant_trunades:
+            replace_main_deck_card(giant_trunades[-1], HEAVY_STORM)
+        elif mystical_space_typhoons:
+            replace_main_deck_card(mystical_space_typhoons[-1], HEAVY_STORM)
+
+    if RING_OF_DESTRUCTION not in main_cards and SOLEMN_JUDGMENT in main_cards:
+        for index, card in enumerate(main_cards):
+            if card == SOLEMN_JUDGMENT:
+                replace_main_deck_card(index, RING_OF_DESTRUCTION)
 
     for card_name, card_code in CPU_DECK_REQUIRED_CARDS:
         if card_code not in main_cards:

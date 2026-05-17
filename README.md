@@ -24,8 +24,10 @@ I recommend [xdelta-wasm](https://kotcrab.github.io/xdelta-wasm) for patching in
   - The deck editor treats owned cards as exactly 3 copies, while cards at 0 copies stay unobtained.
   - START + SELECT + L + R during a duel sets the opponent's LP to 0, intended to skip puzzles or emergency exit unlikely issues with errata'd cards.
   - Bots play with `List - September, 2010`, but with the following changes:
-    - if there are 2 or more Mystical Space Typhoons, change one of them to Heavy Storm, else add Heavy Storm to the deck
-    - add Mirror Force, Torrential Tribute, Dark Hole, and Ring of Destruction when missing
+    - if there is at least 1 Giant Trunade and no Heavy Storm, change 1 Giant Trunade to Heavy Storm
+    - else, if there is at least 1 Mystical Space Typhoon and no Heavy Storm, change 1 Mystical Space Typhoon to Heavy Storm
+    - if there is at least 1 Solemn Judgment and no Ring of Destruction, change all Solemn Judgments to Ring of Destruction
+    - add Ring of Destruction, Mirror Force, Torrential Tribute, and Dark Hole when missing (one copy each)
 
 <details>
 <summary>Quality List - 2010 limits and erratas</summary>
