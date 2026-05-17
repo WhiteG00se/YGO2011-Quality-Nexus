@@ -25,6 +25,7 @@ POLYMERIZATION_PATCH_ADDRESSES = {
 
 RING_OF_DESTRUCTION_PATCH_ADDRESSES = {
     0x02210662,  # Ring of Destruction: damage opponent -> heal opponent
+    0x02210666,  # Ring of Destruction: route second damage call through existing heal path
 }
 
 CYBER_STEIN_NON_OPT_PATCH_ADDRESSES = {
@@ -152,8 +153,8 @@ RING_OF_DESTRUCTION_OLD_DESCRIPTION = (
     b"Select and destroy 1 face-up monster, and inflict damage to both players equal to its ATK."
 )
 RING_OF_DESTRUCTION_NEW_DESCRIPTION = (
-    b"Select and destroy 1 face-up monster. Opponent gains LP equal to its ATK; you take damage."
-)
+    b"Select and destroy 1 face-up monster, and both players gain LP equal to its ATK."
+).ljust(len(RING_OF_DESTRUCTION_OLD_DESCRIPTION), b" ")
 
 POLYMERIZATION_OLD_DESCRIPTION = (
     b"Send Fusion Material Monsters that are listed on a Fusion Monster Card from your hand or your side of the "
@@ -288,6 +289,16 @@ ARM9_OVERLAY_PATCHES = {
                 """
             ),
             INSTANT_WIN_HELPER_BYTES,
+        ),
+        (
+            0x02210662,
+            bytes.fromhex("bf f7 2d fb"),  # Ring of Destruction: damage opponent
+            bytes.fromhex("c0 f7 8d f9"),  # Ring of Destruction: heal opponent
+        ),
+        (
+            0x02210666,
+            bytes.fromhex("28 1c"),  # adds r0, r5, #0 before second damage call
+            bytes.fromhex("06 e0"),  # b 0x02210676; use existing heal-current-player path
         ),
     ],
     8: [
@@ -925,6 +936,7 @@ def main() -> None:
 
     rom = ndspy.rom.NintendoDSRom.fromFile(str(SOURCE_ROM))
     patch_nested_file(rom, 50, LIMIT_FILE, patch_limit_201009)
+    patch_nested_file(rom, 51, "card_desc_e.bin", patch_ring_of_destruction_desc)
 
     # All errata disabled — bugfix outstanding for code cave placement
     # cave_size = len(CYBER_STEIN_HALF_LP_COST_CAVE_BYTES) + len(POLYMERIZATION_DRAW_AFTER_FUSION_CAVE_BYTES)
